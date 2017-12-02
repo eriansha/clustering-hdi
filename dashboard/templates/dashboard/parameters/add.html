@@ -1,0 +1,37 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Input parameters</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+	<div class='container'>
+		<div class="page-header">
+            <h1 align='center'>Human Development Index Clustering</h1>
+        </div>
+
+		<div class='row'>
+			<div class="Absolute-Center is-Responsive">
+				<div class='box-param'>
+					<h1>Insert parameters</h1>
+					<p>this parameters is needed for clustering algorithm</p>
+					{% load bootstrap3 %}
+					<form method='post' class='form'>
+						<div class="form-group">
+							{% csrf_token %}
+							{% bootstrap_form form %}
+							{% buttons %}
+							<button type='submit' class='btn btn-primary'>
+								{% bootstrap_icon "star" %}Start ST-DBSCAN
+							</button>
+						</div>
+						{% endbuttons %}
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
