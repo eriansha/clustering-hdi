@@ -1,0 +1,147 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Your Parameters</title>
+	  <meta charset="utf-8">
+	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	  <meta name="description" content="">
+	  <meta name="author" content="">
+	  <title>SB Admin - Start Bootstrap Template</title>
+	  <!-- Bootstrap core CSS-->
+	  <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+	  <!-- Custom fonts for this template-->
+	  <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+	  <!-- Page level plugin CSS-->
+	  <link href="{% static 'datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
+
+</head>
+<body class="fixed-nav bg-dark" id="page-top">
+	<!-- Navigation-->
+  	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    	<a class="navbar-brand" href="index.html">Cluster-Dashboard	</a>
+    	<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      		<span class="navbar-toggler-icon"></span>
+    	</button>
+
+	    <div class="collapse navbar-collapse" id="navbarResponsive">
+	    	<!-- Menu -->
+	     	<ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+	      		<!-- Dashboard -->
+	        	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+	          		<a class="nav-link" href="index.html">
+	            		<i class="fa fa-fw fa-dashboard"></i>
+	            		<span class="nav-link-text">Dashboard</span>
+	          		</a>
+	        	</li>
+	        	<!-- Chart -->
+	        	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+	          		<a class="nav-link" href="charts.html">
+	            		<span class="nav-link-text">Charts</span>
+	          		</a>
+	        	</li>
+	        	<!-- Tables -->
+	        	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+	          		<a class="nav-link" href="tables.html">
+	            		<span class="nav-link-text">Tables</span>
+	          		</a>
+	        	</li>
+	      	</ul>
+	      	<!-- Logout (back) -->
+	      	<ul class="navbar-nav ml-auto">
+	        	<li class="nav-item">
+	          		<a class="nav-link" href="{% url 'dashboard:input' %}">
+	            		Back
+	            	</a>
+	        	</li>
+	      	</ul>
+	    </div>
+  	</nav>
+
+  	<!-- Dashboard content -->
+  	<div>
+	    <div class="container-fluid">
+	      	<!-- Breadcrumbs-->
+	     	<ol class="breadcrumb">
+	        <li class="breadcrumb-item">
+	          <a href="#">Dashboard</a>
+	        </li>
+	        <li class="breadcrumb-item active">My Dashboard</li>
+	      	</ol>
+	      	<!-- Area Chart Example-->
+	      	<div class="card mb-3">
+	        	<div class="card-header">
+	          		<i class="fa fa-area-chart"></i>Clustering result
+		          		{% for parameter in parameters %}
+							(eps1: {{ parameter.eps1 }}, eps2: {{ parameter.eps2 }}, minPts: {{ parameter.minPts }}, de: {{ parameter.de }})
+						{% endfor %}	
+	          		</div>
+	        		<div class="card-body">
+	          			<canvas id="myAreaChart" width="100%" height="30"></canvas>
+	        		</div>
+	        	<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+	      	</div>
+
+	      	<div class="row">
+	        	<div class="col-lg-8">
+	          	<!-- Example Bar Chart Card-->
+	          		<div class="card mb-3">
+	            		<div class="card-header">
+	              			Bar Chart Example</div>
+	            			<div class="card-body">
+	              				<div class="row">
+	                				<div class="col-sm-8 my-auto">
+	                  					<canvas id="myBarChart" width="100" height="50"></canvas>
+	                				</div>
+	                				<div class="col-sm-4 text-center my-auto">
+		                  				<div class="h4 mb-0 text-primary">$34,693</div>
+		                  				<div class="small text-muted">YTD Revenue</div>
+		                  				<hr>
+		                  				<div class="h4 mb-0 text-warning">$18,474</div>
+		                  				<div class="small text-muted">YTD Expenses</div>
+		                  				<hr>
+		                  				<div class="h4 mb-0 text-success">$16,219</div>
+		                  				<div class="small text-muted">YTD Margin</div>
+	                				</div>
+	              				</div>
+	            			</div>
+	            			<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+	          			</div>
+     				</div>
+          		<!-- /Card Columns-->
+        		<div class="col-lg-4">
+          			<!-- Example Pie Chart Card-->
+          			<div class="card mb-3">
+            			<div class="card-header">
+              				<i class="fa fa-pie-chart"></i> Pie Chart Example
+              			</div>
+            			<div class="card-body">
+              				<canvas id="myPieChart" width="100%" height="100"></canvas>
+            			</div>
+            			<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+          			</div>  
+        		</div>
+      		</div>
+    	</div>
+    </div>
+</body>
+</html>
+
+<!-- 	<div class='contaier'>
+		<div class='page-header'>
+			<h1> Dashboard </h1>
+			<a href="{% url 'dashboard:input' %}"><span class="glyphicon glyphicon-menu-left"></span></a>
+		</div>
+
+		<div class='row'>
+			{% for parameter in parameters %}
+				<div class='param'>
+				<h3> eps1: {{ parameter.eps1 }}</h3>
+				<h3> eps2: {{ parameter.eps2 }}</h3>
+				<h3> minPts: {{ parameter.minPts }}</h3>
+				<h3> de: {{ parameter.de }}</h3>
+				</div>
+			{% endfor %}
+		</div>
+	</div> -->

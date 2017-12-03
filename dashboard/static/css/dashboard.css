@@ -1,47 +1,13 @@
 body {
-	background-color: #A5D6A7;
+	background-color: #ffffff;
 }
 
 .page-header {
-    margin-top: 20px;
+    background-color: #A5D6A7;
+    margin-top: 0;
     padding: 20px 20px 20px 40px;
 }
 
 .page-header h1 {
-	font-size: 25pt;
 	color: #ffffff;
-}
-
-.Absolute-Center {
-  margin: auto;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-}
-
-.Absolute-Center.is-Responsive {
-  width: 50%; 
-  height: 65%;
-  min-width: 200px;
-  max-width: 400px;
-}
-
-.box-param {
-	padding: 20px;
-	color: #ffffff;
-	background-color: #0097A7;
-	opacity: 0.8;
-}
-
-.box-param h1 {
-	font-size: 15pt;
-}
-
-.box-param p {
-	font-size: 10pt;
-	color: #ECEFF1;
-}
-
-.box-param form {
-	font-size: 15pt;
-	padding-bottom: 5px;
 }
