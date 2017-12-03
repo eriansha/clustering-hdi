@@ -5,20 +5,20 @@ from .forms import PostParam
 #from .forms import UploadFileForm
 # Create your views here.
 
-def parameters_list(request):
+def dashboard(request):
 	parameters = Parameters.objects.all()
-	return render(request, 'dashboard/parameters/list.html', {'parameters': parameters})
+	return render(request, 'dashboard/parameters/dashboard.html', {'parameters': parameters})
 
-def parameters_add(request):
+def input_param(request):
 	if request.method == 'POST':
 		form = PostParam(request.POST)
 		if form.is_valid():
 			Parameters.objects.all().delete()
 			form.save()
-			return redirect(reverse('dashboard:parameters_list'))
+			return redirect(reverse('dashboard:dashboard'))
 	else:
 		form = PostParam()
 
-	return render(request, 'dashboard/parameters/add.html', {'form': form})
+	return render(request, 'dashboard/parameters/input.html', {'form': form})
 
 

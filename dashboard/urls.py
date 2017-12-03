@@ -4,7 +4,7 @@ from .import views
 app_name = 'dashboard'
 
 urlpatterns = [
-	url(r'^parameters/$', views.parameters_list, name='parameters_list'),
-	url(r'^parameters/add/$', views.parameters_add, name='parameters_add'),
+	url(r'^dashboard/$', views.dashboard, name='dashboard'),
+	url(r'^input/$', views.input_param, name='input'),
 ]
 
