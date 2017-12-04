@@ -1,6 +1,6 @@
 *.pyc
 *~
-__pycache__
+__pycache__/
 clusterDash
 db.sqlite3
 .DS_Store
