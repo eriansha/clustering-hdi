@@ -5,4 +5,4 @@ class PostParam(forms.ModelForm):
 
 	class Meta:
 		model = Parameters
-		fields = ('eps1', 'eps2', 'minPts', 'de')
+		fields = ('IPM_file', 'eps1', 'eps2', 'minPts', 'de')

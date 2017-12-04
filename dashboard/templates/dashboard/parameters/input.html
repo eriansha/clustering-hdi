@@ -3,7 +3,11 @@
 <html>
 <head>
 	<title>Input parameters</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+<!-- 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous"> -->
+	<!-- Bootstrap core CSS-->
+	<link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+	<!-- Custom fonts for this template-->
+	<link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="{% static 'css/input_param.css' %}">
 </head>
 <body class='bg-dark'>
@@ -17,17 +21,17 @@
 				<div class='box-param'>
 					<h1>Insert parameters</h1>
 					<p>this parameters is needed for clustering algorithm</p>
-					{% load bootstrap3 %}
-					<form method='post' class='form'>
+					{% load bootstrap4 %}
+					<form method='post' class='form' enctype="multipart/form-data">
 						<div class="form-group">
 							{% csrf_token %}
 							{% bootstrap_form form %}
 							{% buttons %}
-							<button type='submit' class='btn btn-primary'>
-								{% bootstrap_icon "star" %}Start ST-DBSCAN
-							</button>
+								<button type='submit' class='btn btn-primary'>
+									Start ST-DBSCAN
+								</button>
+							{% endbuttons %}
 						</div>
-						{% endbuttons %}
 					</form>
 				</div>
 			</div>
