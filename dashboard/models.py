@@ -15,6 +15,8 @@ class Parameters(models.Model):
 		dataset_ipm_jawa = np.genfromtxt(dataset, delimiter=',', skip_header=1, dtype='U')
 		kab_ipm = dataset_ipm_jawa[:,0]
 
+		return kab_ipm
+
 	def doSTDBSCAN(self):
 		load_data = self.IPM_file
 		dataset_ipm_jawa = np.genfromtxt(load_data, delimiter=',', skip_header=1)
