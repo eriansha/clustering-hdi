@@ -15,7 +15,13 @@
 	  <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
 	  <!-- Page level plugin CSS-->
 	  <link href="{% static 'datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
+<!--  <script src="https://d3js.org/d3.v4.min.js"></script>
+	  <script src="https://d3js.org/topojson.v1.min.js"></script> -->
+	  <!-- custom css -->
+	  <link href="{% static 'css/chart.css' %}" rel="stylesheet">
 
+	  <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	  <script src="//d3js.org/topojson.v1.min.js"></script>
 </head>
 <body class="fixed-nav bg-dark" id="page-top">
 	<!-- Navigation-->
@@ -62,7 +68,7 @@
   	<!-- Dashboard content -->
   	<div>
 	    <div class="container-fluid">
-	      	<!-- Breadcrumbs-->
+	      	<!-- Breadcrumbs-->	
 	     	<ol class="breadcrumb">
 	        <li class="breadcrumb-item">
 	          <a href="#">Dashboard</a>
@@ -77,8 +83,7 @@
 							(eps1: {{ parameter.eps1 }}, eps2: {{ parameter.eps2 }}, minPts: {{ parameter.minPts }}, de: {{ parameter.de }})
 						{% endfor %}	
 	          		</div>
-	        		<div class="card-body">
-	          			<canvas id="myAreaChart" width="100%" height="30"></canvas>
+	        		<div class="card-body" id="myAreaChart">
 	        		</div>
 	        	<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 	      	</div>
@@ -91,8 +96,9 @@
 	              			Bar Chart Example</div>
 	            			<div class="card-body">
 	              				<div class="row">
-	                				<div class="col-sm-8 my-auto">
-	                  					<canvas id="myBarChart" width="100" height="50"></canvas>
+	                					<div class="col-sm-8 my-auto">
+	                  					<canvas id="myBarChart" width="100" height="50">
+	                  					</canvas>
 	                				</div>
 	                				<div class="col-sm-4 text-center my-auto">
 		                  				<div class="h4 mb-0 text-primary">$34,693</div>
@@ -125,23 +131,48 @@
       		</div>
     	</div>
     </div>
+    {% for parameter in parameters %}
+	    <script>
+	    	var width = 1200,
+	    		height = 350;
+
+	    	var svgContainer = d3.select('#myAreaChart').append('svg')
+	    												.attr('width', width)
+	    												.attr('height', height);
+
+
+	    	d3.json('/static/json/jawa.topo.json', function(error, data) {
+	    		if(error) return console.error(error);
+	    		console.log(data);
+
+	    		var center = d3.geo.centroid(topojson.feature(data, data.objects.jawa));
+	    	//  var projection = d3.geo.albers()
+						// 		   .center([0, 55.4])
+						// 		   .rotate([4.4, 0])
+						// 		   .parallels([50, 60])
+						// 		   .scale(6000)
+						// 		   .translate([width / 2, height / 2]);
+
+				var projection =  d3.geo.mercator()
+	    							.center(center)
+	    							.scale(7000)
+     								.translate([width /2, height /2]);
+
+				var path = d3.geo.path()
+	    					 .projection(projection);
+
+
+	    		svgContainer.selectAll(".provinsi")
+	    					.data(topojson.feature(data, data.objects.jawa).features)
+	    					.enter()
+	    					.append('path')
+	    					.attr('class', function(d) { 
+	    						console.log(d);
+	    						var namaProv = d.properties['PROVINSI'].replace(/\s/g, "");
+	    						return "provinsi " + namaProv })
+	    					.attr('d', path);
+	    	});
+		</script>
+	{% endfor %}
 </body>
 </html>
-
-<!-- 	<div class='contaier'>
-		<div class='page-header'>
-			<h1> Dashboard </h1>
-			<a href="{% url 'dashboard:input' %}"><span class="glyphicon glyphicon-menu-left"></span></a>
-		</div>
-
-		<div class='row'>
-			{% for parameter in parameters %}
-				<div class='param'>
-				<h3> eps1: {{ parameter.eps1 }}</h3>
-				<h3> eps2: {{ parameter.eps2 }}</h3>
-				<h3> minPts: {{ parameter.minPts }}</h3>
-				<h3> de: {{ parameter.de }}</h3>
-				</div>
-			{% endfor %}
-		</div>
-	</div> -->

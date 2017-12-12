@@ -1,0 +1,12 @@
+svg{
+   	display: block;
+   	margin: auto;
+}
+
+/* provience colors*/
+.provinsi.DKIJAKARTA { fill: #ddc; }
+.provinsi.JAWABARAT { fill: #cdd; }
+.provinsi.JAWATENGAH { fill: #cdc; }
+.provinsi.JAWATIMUR { fill: #dcd; }
+.provinsi.DAERAHISTIMEWAYOGYAKARTA { fill: #ccd; }
+.provinsi.BANTEN { fill: #ddd; }
