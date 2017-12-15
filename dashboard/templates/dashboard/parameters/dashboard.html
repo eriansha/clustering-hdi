@@ -140,6 +140,12 @@
 	    												.attr('width', width)
 	    												.attr('height', height);
 
+	    	// Define 'div' for tooltips
+			var tooltip = d3.select("#myAreaChart")
+						.append("div")  
+						.attr("class", "tooltip")
+						.style("opacity", 0);  
+
 
 	    	d3.json('/static/json/jawafix.json', function(error, data) {
 	    		if(error) return console.error(error);
@@ -180,7 +186,7 @@
 	    		console.log(result.data)
 	    		var coordinate = []
 	    		result.data.forEach(function(d) {
-	    			coordinate.push([d[1], d[2], d[5]]);
+	    			coordinate.push([d[1], d[2], d[5], d[0]]);
 	    		});
 
 	    		// random coloring for circle
@@ -198,13 +204,13 @@
 	    					.append('circle');
 
 	    		var circleAttributes = circles.attr('cx', function(d) {
-	    											//console.log(d);
+	    											console.log(d);
 	    											return projection(d)[0]; 
 	    										})
 	    									  .attr('cy', function(d) { 
 	    											return projection(d)[1]; 
 	    										})
-	    									  .attr('r', '4px')
+	    									  .attr('r', '6px')
 	    									  .attr('fill', function(d) {
 	    									  		//console.log(d[2]);
 	    									  		if (d[2] == -1) return '#000'
@@ -212,6 +218,22 @@
 	    									  			return color(d[2]);
 	    									  		}
 	    									  });
+
+	    		// hovering tooltips
+	    		var hoverLabel = circleAttributes.on("mouseover", function(d){
+	    									  		tooltip.transition(200)
+	    									  				.duration(200)
+	    									  				.style('opacity', 0.9);
+	    									  		tooltip.text(d[3])
+	    									  				.style('left', (d3.event.pageX - 10) + "px")
+	    									  				.style('top', (d3.event.
+	    									  					pageY - 65) + "px")
+	    									  	})
+	    										 .on("mouseout", function(d) {
+	    										 	tooltip.transition()
+	    										 			.duration(500)
+	    										 			.style('opacity', 0)
+	    										});
 	    	});
 		</script>
 	{% endfor %}
