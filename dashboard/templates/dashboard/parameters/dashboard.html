@@ -138,15 +138,24 @@
 
 	    	var areaContainer = d3.select('#myAreaChart').append('svg')
 	    												.attr('width', width)
-	    												.attr('height', height);
+	    												.attr('height', height),
 
+	    		barContainer = d3.select('#myBarChart').append('svg')
+	    											   .attr('width', width/2)
+	    											   .attr('height', height/2);
+	  		//
+	  		var xScale = d3.scale.ordinal().range([0, width/2]),
+	  			yScale = d3.scale.linear().range([height/2, 0]);
+
+	  		var g = barContainer.append('g')
+	  							.attr('transform', 'translate(' + 100 + ","
+	  								+ 100 + ')');
 
 	    	// Define 'div' for tooltips
 			var tooltip = d3.select("#myAreaChart")
 						.append("div")  
 						.attr("class", "tooltip")
-						.style("opacity", 0);  
-
+						.style("opacity", 0);
 
 	    	d3.json('/static/json/jawafix.json', function(error, data) {
 	    		if(error) return console.error(error);
@@ -184,12 +193,19 @@
 			      //    .attr("d", path(topojson.mesh(data, data.objects.jawa, function(a, b) { return a !== b; })));
 
 	    		var result = {{ parameter.resultToJson|safe }};
-	    		// console.log(result.data)
-	    		var coordinate = []
+	    		//console.log(result);
+	    		var dict = [];
 	    		result.data.forEach(function(d) {
-	    			coordinate.push([d[1], d[2], d[5], d[0]]);
+	    			dict.push({
+	    				"kabupaten": d[0],
+	    				"coordinate": [d[1], d[2]],
+	    				"tahun": d[3],
+	    				"ipm": d[4],
+	    				"cluster": d[5],
+	    			});
 	    		});
 
+	    		//console.log(dict);
 	    		// random coloring for circle
 	    		var color = d3.scale.category10();
 
@@ -200,41 +216,41 @@
 	    					// 	//console.log(coordinate)
 	    					// 	return coordinate;
 	    					// })
-	    					.data(coordinate)
+	    					.data(dict)
 	    					.enter()
 	    					.append('circle');
 
-	    		var circleAttributes = circles.attr('cx', function(d) {
-	    											// console.log(d);
-	    											return projection(d)[0]; 
-	    										})
-	    									  .attr('cy', function(d) { 
-	    											return projection(d)[1]; 
-	    										})
+	    	var circleAttr = circles.attr('cx', function(d) {
+	    									var coordinate = d.coordinate;
+	    									return projection(coordinate)[0]; 
+	    								})
+	    								.attr('cy', function(d) {
+	    									var coordinate = d.coordinate; 
+	    									return projection(coordinate)[1];
+	    								})
 	    									  .attr('r', '6px')
 	    									  .attr('fill', function(d) {
 	    									  		//console.log(d[2]);
-	    									  		if (d[2] == -1) return '#000'
+	    									  		if (d.cluster == -1) return '#000'
 	    									  		else {
-	    									  			return color(d[2]);
+	    									  			return color(d.cluster);
 	    									  		}
 	    									  });
 
 	    		// hovering tooltips
-	    		var hoverLabel = circleAttributes.on("mouseover", function(d){
-	    									  		tooltip.transition(200)
-	    									  				.duration(200)
-	    									  				.style('opacity', 0.9);
-	    									  		tooltip.text(d[3])
-	    									  				.style('left', (d3.event.pageX - 10) + "px")
-	    									  				.style('top', (d3.event.
-	    									  					pageY - 65) + "px")
-	    									  	})
-	    										 .on("mouseout", function(d) {
-	    										 	tooltip.transition()
-	    										 			.duration(500)
-	    										 			.style('opacity', 0)
-	    										});
+	    		circleAttr.on("mouseover", function(d) {
+	    			tooltip.transition(200)
+	    				   .duration(200)
+	    				   .style('opacity', 0.9);
+	    			tooltip.text(d.kabupaten)
+	    				   .style('left', (d3.event.pageX - 10) + "px")
+	    				   .style('top', (d3.event.pageY - 65) + "px");
+	    		})
+	    		.on("mouseout", function(d) {
+	    			tooltip.transition()
+	    					.duration(500)
+	    					.style('opacity', 0)
+	    		});
 	    	});
 		</script>
 	{% endfor %}
