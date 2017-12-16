@@ -136,9 +136,10 @@
 	    	var width = 1200,
 	    		height = 350;
 
-	    	var svgContainer = d3.select('#myAreaChart').append('svg')
+	    	var areaContainer = d3.select('#myAreaChart').append('svg')
 	    												.attr('width', width)
 	    												.attr('height', height);
+
 
 	    	// Define 'div' for tooltips
 			var tooltip = d3.select("#myAreaChart")
@@ -149,7 +150,7 @@
 
 	    	d3.json('/static/json/jawafix.json', function(error, data) {
 	    		if(error) return console.error(error);
-	    		console.log(data);
+	    		// console.log(data);
 
 	    		var center = d3.geo.centroid(topojson.feature(data, data.objects.jawa));
 	    		var subunits = topojson.feature(data, data.objects.jawa);
@@ -162,11 +163,11 @@
 				var path = d3.geo.path()
 	    					 .projection(projection);
 
-	    		svgContainer.append('path')
+	    		areaContainer.append('path')
 	    					.datum(subunits)
 	    					.attr('d', path);
 
-	    		svgContainer.selectAll(".provinsi")
+	    		areaContainer.selectAll(".provinsi")
 	    					.data(topojson.feature(data, data.objects.jawa).features)
 	    					.enter()
 	    					.append('path')
@@ -177,13 +178,13 @@
 	    					.attr('d', path);
 
 	    		// put border around district
-	    		  // svgContainer.append("path")
+	    		  // areaContainer.append("path")
 			      //    .attr("stroke", "#fff")
 			      //    .attr("stroke-width", 0.5)
 			      //    .attr("d", path(topojson.mesh(data, data.objects.jawa, function(a, b) { return a !== b; })));
 
 	    		var result = {{ parameter.resultToJson|safe }};
-	    		console.log(result.data)
+	    		// console.log(result.data)
 	    		var coordinate = []
 	    		result.data.forEach(function(d) {
 	    			coordinate.push([d[1], d[2], d[5], d[0]]);
@@ -193,7 +194,7 @@
 	    		var color = d3.scale.category10();
 
 	    		// add circle to svg
-	    		var circles = svgContainer.selectAll('circle')
+	    		var circles = areaContainer.selectAll('circle')
 	    					// .data(result.data, function(d) {
 	    					// 	var coordinate = [d[1], d[2]];
 	    					// 	//console.log(coordinate)
@@ -204,7 +205,7 @@
 	    					.append('circle');
 
 	    		var circleAttributes = circles.attr('cx', function(d) {
-	    											console.log(d);
+	    											// console.log(d);
 	    											return projection(d)[0]; 
 	    										})
 	    									  .attr('cy', function(d) { 
