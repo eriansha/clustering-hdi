@@ -10,8 +10,8 @@ div.tooltip {
   height: 40px;	
   padding: 10px;
   font: 12px sans-serif;
-  color: #000;	
-  background: #fff;	
+  color: #fff;	
+  background: #000;
   border: 0px;					
   border-radius: 8px;
  /*  pointer-events: none;	This line needs to be removed */
