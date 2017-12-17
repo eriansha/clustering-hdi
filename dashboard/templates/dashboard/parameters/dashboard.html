@@ -151,7 +151,7 @@
 	    												.attr('height', areaHeight);
 
 	    	// Define 'div' for tooltips
-			var tooltip = d3.select("#myAreaChart")
+			var tooltip = d3.select(".card-body")
 						.append("div")  
 						.attr("class", "tooltip")
 						.style("opacity", 0);
@@ -250,7 +250,7 @@
 	    					.duration(500)
 	    					.style('opacity', 0)
 	    		});
-	    		
+
 	    		// add bar chart while click the plot
 	    		circleAttr.on("click", function(d) {
 	    			d3.select('#myBarChart')
@@ -308,7 +308,21 @@
 			        			return yScale(d.ipm); })
 			        		.attr("height", function(d) { 
 			        			return barHeight - yScale(d.ipm); })
-			        		.attr("width", xScale.rangeBand());
+			        		.attr("width", xScale.rangeBand())
+			        		.on("mouseover", function(d) {
+				    			tooltip.transition(200)
+				    				   .duration(200)
+				    				   .style('opacity', 0.9);
+				    			tooltip.html('tahun ' + d.tahun + '<br>'
+				    						+ d.ipm)
+				    				   .style('left', (d3.event.pageX - 10) + "px")
+				    				   .style('top', (d3.event.pageY - 65) + "px");
+				    		})
+				    		.on("mouseout", function(d) {
+				    			tooltip.transition()
+				    					.duration(500)
+				    					.style('opacity', 0)
+				    		});
 				});
 	    	});
 		</script>
