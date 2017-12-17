@@ -27,7 +27,7 @@
   		fill: steelblue;
 		}
 	  	.axis text {
-		  font: 10px sans-serif;
+		  font: 14px sans-serif;
 		}
 
 		.axis path,
@@ -93,53 +93,41 @@
 	      	<!-- Area Chart Example-->
 	      	<div class="card mb-3">
 	        	<div class="card-header">
-	          		<i class="fa fa-area-chart"></i>Clustering result
+	          		<i class="fa fa-area-chart"></i> Clustering result
 		          		{% for parameter in parameters %}
 							(eps1: {{ parameter.eps1 }}, eps2: {{ parameter.eps2 }}, minPts: {{ parameter.minPts }}, de: {{ parameter.de }})
 						{% endfor %}	
 	          		</div>
 	        		<div class="card-body" id="myAreaChart">
 	        		</div>
-	        	<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+	        	<div class="card-footer small text-muted"></div>
 	      	</div>
 
 	      	<div class="row">
-	        	<div class="col-lg-8">
+	        	<div class="col-lg-7">
 	          	<!-- Example Bar Chart Card-->
 	          		<div class="card mb-3">
-	            		<div class="card-header">
-	              			Bar Chart Example</div>
-	            			<div class="card-body">
-	              				<div class="row">
-	                				<div class="col-sm-8 my-auto" id="myBarChart">
-
-	                				</div>
-	                				<div class="col-sm-4 text-center my-auto">
-		                  				<div class="h4 mb-0 text-primary">$34,693</div>
-		                  				<div class="small text-muted">YTD Revenue</div>
-		                  				<hr>
-		                  				<div class="h4 mb-0 text-warning">$18,474</div>
-		                  				<div class="small text-muted">YTD Expenses</div>
-		                  				<hr>
-		                  				<div class="h4 mb-0 text-success">$16,219</div>
-		                  				<div class="small text-muted">YTD Margin</div>
-	                				</div>
-	              				</div>
-	            			</div>
-	            			<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-	          			</div>
-     				</div>
+	            		<div class="card-header" id='bar-header'>
+	            			<i class="fa fa-bar-chart"></i> Bar Chart
+	            		</div>
+	            		<div class="card-body">
+	              			<div class="row" id="myBarChart">
+	              			</div>
+	            		</div>
+	            		<div class="card-footer small text-muted"></div>
+	          		</div>
+     			</div>
           		<!-- /Card Columns-->
-        		<div class="col-lg-4">
+        		<div class="col-lg-5">
           			<!-- Example Pie Chart Card-->
-          			<div class="card mb-3">
+          			<div class="card mb-5">
             			<div class="card-header">
-              				<i class="fa fa-pie-chart"></i> Pie Chart Example
+              				<i class="fa fa-pie-chart"></i> Pie Chart 
               			</div>
             			<div class="card-body">
               				<canvas id="myPieChart" width="100%" height="100"></canvas>
             			</div>
-            			<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+            			<div class="card-footer small text-muted"></div>
           			</div>  
         		</div>
       		</div>
@@ -150,8 +138,8 @@
 	    	var margin = {
 	    			top: 10,
 	    			right: 10,
-	    			bottom: 10,
-	    			left: 30
+	    			bottom: 20,
+	    			left: 50
 	    		},
 	    		areaWidth = 1200,
 	    		areaHeight = 350,
@@ -262,10 +250,14 @@
 	    					.duration(500)
 	    					.style('opacity', 0)
 	    		});
+	    		
 	    		// add bar chart while click the plot
 	    		circleAttr.on("click", function(d) {
 	    			d3.select('#myBarChart')
 	    			  .selectAll('svg').remove();
+
+	    			d3.select('#bar-header')
+	    			  .html('<i class="fa fa-bar-chart"></i> Bar Chart: ' + d.kabupaten);
 	  		
 			  		// x-scale and y-scale
 			  		var xScale = d3.scale.ordinal()
@@ -290,8 +282,10 @@
 	    			console.log(bar);
 	    			xScale.domain(bar.map(function(d) { 
 	    				return d.tahun; }));
-	    			yScale.domain([0, d3.max(bar, function(d) {
-	    				return d.ipm; })]);
+	    			yScale.domain([d3.min(bar, function(d) {
+					    				return d.ipm-2.5; }),
+					    		   d3.max(bar, function(d) {
+					    				return d.ipm; })]);
 
 	    			barChart.append("g")
 					        .attr("class", "x axis")
