@@ -9,8 +9,9 @@ div.tooltip {
   width: 100px;
   height: 40px;	
   padding: 10px;
-  font: 12px sans-serif;	
-  background: lightsteelblue;	
+  font: 12px sans-serif;
+  color: #000;	
+  background: #fff;	
   border: 0px;					
   border-radius: 8px;
  /*  pointer-events: none;	This line needs to be removed */
