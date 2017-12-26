@@ -28,15 +28,16 @@ div.tooltip {
 
 /* Bar Chart */
 .bar {
-  fill: steelblue;
+  /*fill: steelblue; */
 }
-  .axis text {
+.axis text {
   font: 14px sans-serif;
 }
 
 .axis path,
 .axis line {
-  fill: #000;
+  fill: rgb(177, 177, 177);;
   stroke: #000;
+  stroke-width: 1;
   shape-rendering: crispEdges;
 }

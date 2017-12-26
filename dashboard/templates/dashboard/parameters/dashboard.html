@@ -109,8 +109,7 @@
             			<div class="card-header">
               				<i class="fa fa-pie-chart"></i> Pie Chart 
               			</div>
-            			<div class="card-body">
-              				<canvas id="myPieChart" width="100%" height="100"></canvas>
+            			<div class="card-body" id="myPieChart">
             			</div>
             			<div class="card-footer small text-muted"></div>
           			</div>  
@@ -129,11 +128,24 @@
 	    		areaWidth = 1200,
 	    		areaHeight = 350,
 	    		barWidth = 600 - margin.left - margin.right,
-	    		barHeight = 200 - margin.top - margin.bottom;
+	    		barHeight = 200 - margin.top - margin.bottom,
+	    		pieWidth = 500,
+	    		pieHeight = 300,
+	    		radius = Math.min(pieWidth, pieHeight) / 2;
 
+	    	// container for area chart
 	    	var areaContainer = d3.select('#myAreaChart').append('svg')
 	    												.attr('width', areaWidth)
 	    												.attr('height', areaHeight);
+
+	    	// container for pie chart
+	    	var pieContainer = d3.select('#myPieChart').append('svg')
+	    											   .attr('width', pieWidth)
+	    											   .attr('height', pieHeight)
+	    											   .append('g')
+	    											   .attr('transform', 'translate(' + pieWidth / 2 + ',' + 
+	    											   	   pieHeight / 2 + ')');
+
 
 	    	// Define 'div' for tooltips
 			var tooltip = d3.select(".card-body")
@@ -189,7 +201,6 @@
 	    			});
 	    		});
 
-	    		//console.log(dict);
 	    		// random coloring for circle
 	    		var color = d3.scale.category10();
 
@@ -236,6 +247,38 @@
 	    					.style('opacity', 0)
 	    		});
 
+	    		// add pie chart
+	    		console.log(dict);
+	    		var arc = d3.svg.arc()
+	    				    .outerRadius(radius)
+	    					.innerRadius(0);
+
+	    		var pie = d3.layout.pie().sort(null)
+	    					       .value(function(d) { 
+	    					       	return d.cluster; });
+
+	    		var g = pieContainer.selectAll('.fan')
+	    							  .data(pie(dict))
+	    							  .enter()
+	    							  	.append('g')
+	    							  	.attr('class', 'fan');
+
+	    		g.append('path')
+	    		   .attr('d', arc)
+	    		   .attr('fill', function(d) { 	    								
+	    		   		if (d.cluster == -1) return '#000'
+	    		   		else if (d.cluster == 1) return '#f00'
+	    				else {
+	    						return color(d.cluster);
+	    					 }
+	    			});
+
+	    		g.append("text")
+				 .attr("transform", function(d) { 
+				 	return "translate(" + arc.centroid(d) + ")"; })
+				 .style("text-anchor", "middle")
+				 .text(function(d) { return d.cluster; });
+
 	    		// add bar chart while click the plot
 	    		circleAttr.on("click", function(d) {
 	    			d3.select('#myBarChart')
@@ -264,7 +307,7 @@
 			  						 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 	    			var bar = dict.filter(element => element.kabupaten == d.kabupaten);
-	    			console.log(bar);
+	    			//console.log(bar);
 	    			xScale.domain(bar.map(function(d) { 
 	    				return d.tahun; }));
 	    			yScale.domain([d3.min(bar, function(d) {
@@ -294,6 +337,13 @@
 			        		.attr("height", function(d) { 
 			        			return barHeight - yScale(d.ipm); })
 			        		.attr("width", xScale.rangeBand())
+			        		.attr('fill', function(d) {
+	    								//console.log(d[2]);
+	    								if (d.cluster == -1) return '#000'
+	    								else {
+	    									return color(d.cluster);
+	    							  		}
+	    					})
 			        		.on("mouseover", function(d) {
 				    			tooltip.transition(200)
 				    				   .duration(200)
