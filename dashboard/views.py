@@ -10,6 +10,14 @@ def dashboard(request):
 	parameters = Parameters.objects.all()
 	return render(request, 'dashboard/parameters/dashboard.html', {'parameters': parameters})
 
+def charts(request):
+	parameters = Parameters.objects.all()
+	return render(request, 'dashboard/parameters/charts.html', {'parameters': parameters})
+
+def result_table(request):
+	parameters = Parameters.objects.all()
+	return render(request, 'dashboard/parameters/result_table.html', {'parameters': parameters})
+
 def input_param(request):
 	if request.method == 'POST':
 		form = PostParam(request.POST, request.FILES)
