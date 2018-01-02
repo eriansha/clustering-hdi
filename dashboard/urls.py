@@ -8,5 +8,6 @@ urlpatterns = [
 	url(r'^charts/$', views.charts, name='charts'),
 	url(r'^result_table/$', views.result_table, name='result_table'),
 	url(r'^input/$', views.input_param, name='input'),
+	url(r'^menu/$', views.menu, name='menu')
 ]
 

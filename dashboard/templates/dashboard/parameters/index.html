@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Main menu</title>
+	<link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+	<!-- Custom fonts for this template-->
+	<link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+</head>
+<body class='bg-dark'>
+	<div class='container'>
+		<div class="page-header">
+	        <h1 align='center'>Human Development Index Clustering</h1>
+	    </div>
+	    <div class='row'>
+			<div class="Absolute-Center is-Responsive">
+				<div class='box-param'>
+					<div class='vertical-menu'>
+						<a class="btn btn-primary" href="{% url 'dashboard:input' %}">Start ST-DBSCAN</a>
+						<a class="btn btn-primary" href="#">Tentang Aplikasi</a>
+						<a class="btn btn-primary" href="#">Bantuan</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -6,6 +6,9 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
+def menu(request):
+	return render(request, 'dashboard/parameters/index.html')
+
 def dashboard(request):
 	parameters = Parameters.objects.all()
 	return render(request, 'dashboard/parameters/dashboard.html', {'parameters': parameters})
