@@ -21,6 +21,14 @@
 	  <!-- D3Js -->
 	  <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	  <script src="//d3js.org/topojson.v1.min.js"></script>
+	  <script src="{% static 'js/d3.legend.js' %}"></script>
+	  <style type="text/css">
+		.legend rect {
+		  fill:white;
+		  stroke:black;
+		  opacity:0.8;
+		}
+	  </style>
 </head>
 <body class="fixed-nav bg-dark" id="page-top">
 	<!-- Navigation-->
@@ -76,8 +84,8 @@
 	    			bottom: 20,
 	    			left: 50
 	    		},
-	    		areaWidth = 1200,
-	    		areaHeight = 350,
+	    		areaWidth = 1400,
+	    		areaHeight = 450,
 	    		barWidth = 600 - margin.left - margin.right,
 	    		barHeight = 200 - margin.top - margin.bottom,
 	    		pieWidth = 500,
@@ -131,7 +139,7 @@
 	    						//console.log(d);
 	    						var namaProv = d.id.replace(/\s/g, "");
 	    						return "provinsi " + namaProv })
-	    					.attr('d', path);
+	    					.attr('d', path)
 
 	    		// put border around district
 	    		  // areaContainer.append("path")
@@ -174,14 +182,22 @@
 	    									var coordinate = d.coordinate; 
 	    									return projection(coordinate)[1];
 	    								})
-	    									  .attr('r', '6px')
-	    									  .attr('fill', function(d) {
-	    									  		//console.log(d[2]);
-	    									  		if (d.cluster == -1) return '#000'
-	    									  		else {
-	    									  			return color(d.cluster);
-	    									  		}
-	    									  });
+	    								.attr('r', '6px')
+	    								.attr('fill', function(d) {
+	    								//console.log(d[2]);
+	    								if (d.cluster == -1) return '#000'
+	    									else {
+	    									  	return color(d.cluster);
+	    									  	}
+	    								})
+	    								.attr("data-legend",function(d) { 
+	    									return "cluster " + d.cluster});
+
+	    	var legend = areaContainer.append("g")
+						    .attr("class","legend")
+						    .attr("transform","translate(50,30)")
+						    .style("font-size","12px")
+						    .call(d3.legend)
 
 	    		// hovering tooltips
 	    		circleAttr.on("mouseover", function(d) {
