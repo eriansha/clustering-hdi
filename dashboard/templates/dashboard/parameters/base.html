@@ -19,7 +19,7 @@
 	  <script src="https://d3js.org/topojson.v1.min.js"></script -->
 	  <link href="{% static 'css/chart.css' %}" rel="stylesheet">
 	  <!-- D3Js -->
-	  <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	  <script src="//d3js.org/d3.v4.min.js" charset="utf-8"></script>
 	  <script src="//d3js.org/topojson.v1.min.js"></script>
 	  <script src="{% static 'js/d3.legend.js' %}"></script>
 	  <style type="text/css">
@@ -116,15 +116,15 @@
 	    		if(error) return console.error(error);
 	    		// console.log(data);
 
-	    		var center = d3.geo.centroid(topojson.feature(data, data.objects.jawa));
+	    		var center = d3.geoCentroid(topojson.feature(data, data.objects.jawa));
 	    		var subunits = topojson.feature(data, data.objects.jawa);
 
-				var projection =  d3.geo.mercator()
+				var projection =  d3.geoMercator()
 	    							.center(center)
 	    							.scale(7000)
      								.translate([areaWidth /2, areaHeight /2]);
 
-				var path = d3.geo.path()
+				var path = d3.geoPath()
 	    					 .projection(projection);
 
 	    		areaContainer.append('path')
@@ -148,6 +148,8 @@
 			      //    .attr("d", path(topojson.mesh(data, data.objects.jawa, function(a, b) { return a !== b; })));
 
 	    		var result = {{ parameter.resultToJson|safe }};
+	    		var score = {{ parameter.calculate_sc|safe }};
+	    		console.log("score: " + score);
 	    		console.log(result);
 	    		var dict = [];
 	    		result.data.forEach(function(d) {
@@ -161,7 +163,7 @@
 	    		});
 
 	    		// random coloring for circle
-	    		var color = d3.scale.category10();
+	    		var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 	    		// add circle to svg
 	    		var circles = areaContainer.selectAll('circle')
@@ -190,14 +192,15 @@
 	    									  	return color(d.cluster);
 	    									  	}
 	    								})
-	    								.attr("data-legend",function(d) { 
+	    								.attr("data-legend",function(d) {
+	    									console.log(d.cluster); 
 	    									return "cluster " + d.cluster});
 
 	    	var legend = areaContainer.append("g")
 						    .attr("class","legend")
 						    .attr("transform","translate(50,30)")
-						    .style("font-size","12px")
-						    .call(d3.legend)
+						    .style("font-size","16px")
+						    .call(d3.legend);
 
 	    		// hovering tooltips
 	    		circleAttr.on("mouseover", function(d) {
@@ -216,11 +219,11 @@
 
 	    		// add pie chart
 	    		console.log(dict);
-	    		var arc = d3.svg.arc()
+	    		var arc = d3.arc()
 	    				    .outerRadius(radius)
 	    					.innerRadius(0);
 
-	    		var pie = d3.layout.pie().sort(null)
+	    		var pie = d3.pie().sort(null)
 	    					       .value(function(d) { 
 	    					       	return d.cluster; });
 
@@ -255,16 +258,12 @@
 	    			  .html('<i class="fa fa-bar-chart"></i> Bar Chart: ' + d.kabupaten);
 	  		
 			  		// x-scale and y-scale
-			  		var xScale = d3.scale.ordinal()
-			  							 .rangeRoundBands([0, barWidth], .4),
-			  			yScale = d3.scale.linear().range([barHeight, 0]);
+			  		var xScale = d3.scaleBand()
+			  					   .rangeRound([0, barWidth], .4),
+			  			yScale = d3.scaleLinear().range([barHeight, 0]);
 
-			  		var xAxis = d3.svg.axis()
-			  						  .scale(xScale)
-			  						  .orient('bottom'),
-			  			yAxis = d3.svg.axis()
-			  						  .scale(yScale)
-			  						  .orient('left');
+			  		var xAxis = d3.axisBottom(xScale),
+			  			yAxis = d3.axisLeft(yScale);
 
 			  		var barChart = d3.select('#myBarChart')
 			  						 .append('svg')
@@ -303,7 +302,7 @@
 			        			return yScale(d.ipm); })
 			        		.attr("height", function(d) { 
 			        			return barHeight - yScale(d.ipm); })
-			        		.attr("width", xScale.rangeBand())
+			        		.attr("width", xScale.bandwidth())
 			        		.attr('fill', function(d) {
 	    								//console.log(d[2]);
 	    								if (d.cluster == -1) return '#000'
