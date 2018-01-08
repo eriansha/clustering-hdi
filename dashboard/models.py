@@ -2,6 +2,7 @@ from django.db import models
 from dashboard.stdbscan import *
 import numpy as np
 import pandas as pd
+from sklearn.metrics import silhouette_score
 
 # Create your models here.
 class Parameters(models.Model):
@@ -37,3 +38,11 @@ class Parameters(models.Model):
 		df = pd.concat((df_kab, df_result), axis=1)
 
 		return df.to_json(orient='split')
+
+	def calculate_sc(self):
+		# calculate Silhoutte Coeffecient
+		result = self.doSTDBSCAN()
+		score = silhouette_score(result[:,:4], result[:,4])
+
+		return score
+
