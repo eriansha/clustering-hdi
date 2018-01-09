@@ -86,23 +86,12 @@
 	    		areaWidth = 1400,
 	    		areaHeight = 450,
 	    		barWidth = 600 - margin.left - margin.right,
-	    		barHeight = 200 - margin.top - margin.bottom,
-	    		pieWidth = 500,
-	    		pieHeight = 300,
-	    		radius = Math.min(pieWidth, pieHeight) / 2;
+	    		barHeight = 200 - margin.top - margin.bottom;
 
 	    	// container for area chart
 	    	var areaContainer = d3.select('#myAreaChart').append('svg')
 	    												.attr('width', areaWidth)
 	    												.attr('height', areaHeight);
-
-	    	// container for pie chart
-	    	var pieContainer = d3.select('#myPieChart').append('svg')
-	    											   .attr('width', pieWidth)
-	    											   .attr('height', pieHeight)
-	    											   .append('g')
-	    											   .attr('transform', 'translate(' + pieWidth / 2 + ',' + 
-	    											   	   pieHeight / 2 + ')');
 
 
 	    	// Define 'div' for tooltips
@@ -140,12 +129,6 @@
 	    						return "provinsi " + namaProv })
 	    					.attr('d', path)
 
-	    		// put border around district
-	    		  // areaContainer.append("path")
-			      //    .attr("stroke", "#fff")
-			      //    .attr("stroke-width", 0.5)
-			      //    .attr("d", path(topojson.mesh(data, data.objects.jawa, function(a, b) { return a !== b; })));
-
 	    		var result = {{ parameter.resultToJson|safe }};
 	    		var score = {{ parameter.calculate_sc|safe }};
 	    		console.log("score: " + score);
@@ -166,16 +149,11 @@
 
 	    		// add circle to svg
 	    		var circles = areaContainer.selectAll('circle')
-	    					// .data(result.data, function(d) {
-	    					// 	var coordinate = [d[1], d[2]];
-	    					// 	//console.log(coordinate)
-	    					// 	return coordinate;
-	    					// })
-	    					.data(dict)
-	    					.enter()
-	    					.append('circle');
+	    								   .data(dict)
+	    								   .enter()
+	    								   .append('circle');
 
-	    	var circleAttr = circles.attr('cx', function(d) {
+	    		var circleAttr = circles.attr('cx', function(d) {
 	    									var coordinate = d.coordinate;
 	    									return projection(coordinate)[0]; 
 	    								})
@@ -218,20 +196,13 @@
 							    .attr('height', 10)
 							    .style('fill', function(d) {
 							      return color(d);
-							     //  	if (temp.includes(d.cluster) == false) {
-							    	// 	temp.push(d.cluster);
-							    	// 	return color(d.cluster);
-							    	// }
 							    });
 
 							legend.append('text')
 							    .attr('x', 40 - 8)
 							    .attr('y', function(d, i){ return (i *  20) + 9;})
 							    .text(function(d){
-							    	// if (temp.includes(d.cluster) == false) {
-							    	// 	temp.push(d.cluster);
 							    		return "Cluster " + d;
-							    	// }
 							    	});
 				return legend
 			};
@@ -253,38 +224,6 @@
 	    					.duration(500)
 	    					.style('opacity', 0)
 	    		});
-
-	    		// add pie chart
-	    		console.log(dict);
-	    		var arc = d3.arc()
-	    				    .outerRadius(radius)
-	    					.innerRadius(0);
-
-	    		var pie = d3.pie().sort(null)
-	    					       .value(function(d) { 
-	    					       	return d.cluster; });
-
-	    		var g = pieContainer.selectAll('.fan')
-	    							  .data(pie(dict))
-	    							  .enter()
-	    							  	.append('g')
-	    							  	.attr('class', 'fan');
-
-	    		g.append('path')
-	    		   .attr('d', arc)
-	    		   .attr('fill', function(d) { 	    								
-	    		   		if (d.cluster == -1) return '#000'
-	    		   		else if (d.cluster == 1) return '#f00'
-	    				else {
-	    						return color(d.cluster);
-	    					 }
-	    			});
-
-	    		g.append("text")
-				 .attr("transform", function(d) { 
-				 	return "translate(" + arc.centroid(d) + ")"; })
-				 .style("text-anchor", "middle")
-				 .text(function(d) { return d.cluster; });
 
 	    		// add bar chart while click the plot
 	    		circleAttr.on("click", function(d) {
