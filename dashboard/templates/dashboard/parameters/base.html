@@ -301,64 +301,9 @@
 				    					.style('opacity', 0)
 				    		});
 				});
-				// Table
-				// create container for table body
-				function tabulate(data, columns) {
-					var tbody = d3.select('#data-fill');
-						// thead = table.append('thead'),
-						// tbody = table.append('tbody'),
-						// tfoot = table.append('tfoot');
-
-					// // append the header row
-					// thead.append('tr')
-					// 	 .selectAll('th')
-					// 	 .data(columns)
-					// 	 .enter()
-					// 	 	.append('th')
-					// 	 	.text(function (column) { return column; });
-
-					// // append the foot row
-					// tfoot.append('tr')
-					// 	 .selectAll('th')
-					// 	 .data(columns)
-					// 	 .enter()
-					// 	 	.append('th')
-					// 	 	.text(function (column) { return column; });
-
-					// create a row for each object in data
-					var rows = tbody.selectAll('tr')
-									.data(data)
-									.enter()
-									.append('tr');
-
-					// create a cell in each row for each column
-					var cells = rows.selectAll('td')
-									.data(function(row) {
-										return columns.map(function (column) {
-											return {column: column, value: row[column]};
-										});
-									})
-									.enter()
-									.append('td')	
-									.text(function(d) { return d.value});
-
-					return tbody
-				}
-
-				// render the tables: create new dict for table
-				var dictTable = [];
-	    		result.data.forEach(function(d) {
-	    			dictTable.push({
-	    				"kabupaten": d[0],
-	    				"longitude": d[1], 
-	    				"latitude": d[2],
-	    				"tahun": d[3],
-	    				"ipm": d[4],
-	    				"cluster": d[5],
-	    			});
-	    		});
-
-				tabulate(dictTable, ['kabupaten', 'longitude', 'latitude', 'tahun', 'ipm', 'cluster']);
+				
+				// Create table
+				tabulate(result.data, ['kabupaten', 'longitude', 'latitude', 'tahun', 'ipm', 'cluster']);
 	    	});
 		</script>
 	{% endfor %}
@@ -371,5 +316,6 @@
 	    <!-- custom tables -->
 	    <script src="{% static 'js/sb-admin.min.js' %}"></script>
 	    <script src="{% static 'js/sb-admin-datatables.min.js' %}"></script>
+	    <script src="{% static 'js/table.js' %}"></script>
 </body>
 </html>	
