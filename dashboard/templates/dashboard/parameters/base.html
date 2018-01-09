@@ -21,7 +21,6 @@
 	  <!-- D3Js -->
 	  <script src="//d3js.org/d3.v4.min.js" charset="utf-8"></script>
 	  <script src="//d3js.org/topojson.v1.min.js"></script>
-	  <script src="{% static 'js/d3.legend.js' %}"></script>
 	  <style type="text/css">
 		.legend rect {
 		  fill:white;
@@ -191,16 +190,54 @@
 	    									else {
 	    									  	return color(d.cluster);
 	    									  	}
-	    								})
-	    								.attr("data-legend",function(d) {
-	    									console.log(d.cluster); 
-	    									return "cluster " + d.cluster});
+	    								});
 
-	    	var legend = areaContainer.append("g")
-						    .attr("class","legend")
-						    .attr("transform","translate(50,30)")
-						    .style("font-size","16px")
-						    .call(d3.legend);
+			var cluster_legend = [];
+			dict.forEach(function(d) {
+				if (cluster_legend.includes(d.cluster) == false) {
+					cluster_legend.push(d.cluster);
+				}
+			});
+
+			function createLegend(container) {	
+
+				var legend = container.selectAll('g')
+							    .data(cluster_legend.sort())
+							    .enter().append('g')
+							    .attr('class', 'legend')
+							    .attr("transform","translate(20,30)");
+
+							legend.append("path")
+							  .attr("class", "line");
+
+							legend.append('circle')
+							    .attr('cx', 20)
+							    .attr('cy', function(d, i){ return i *  20;})
+							    .attr("r","0.4em")
+							    .attr('width', 10)
+							    .attr('height', 10)
+							    .style('fill', function(d) {
+							      return color(d);
+							     //  	if (temp.includes(d.cluster) == false) {
+							    	// 	temp.push(d.cluster);
+							    	// 	return color(d.cluster);
+							    	// }
+							    });
+
+							legend.append('text')
+							    .attr('x', 40 - 8)
+							    .attr('y', function(d, i){ return (i *  20) + 9;})
+							    .text(function(d){
+							    	// if (temp.includes(d.cluster) == false) {
+							    	// 	temp.push(d.cluster);
+							    		return "Cluster " + d;
+							    	// }
+							    	});
+				return legend
+			};
+
+			createLegend(areaContainer);
+
 
 	    		// hovering tooltips
 	    		circleAttr.on("mouseover", function(d) {
