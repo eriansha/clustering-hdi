@@ -15,17 +15,26 @@
 	  <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
 	  <!-- Page level plugin CSS-->
 	  <link href="{% static 'datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
-<!--  <script src="https://d3js.org/d3.v4.min.js"></script>
-	  <script src="https://d3js.org/topojson.v1.min.js"></script -->
+	  <!-- Custom CSS -->
 	  <link href="{% static 'css/chart.css' %}" rel="stylesheet">
 	  <!-- D3Js -->
-	  <script src="//d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	  <script src="{% static 'js/d3js/d3.min.js' %}" charset="utf-8"></script>
+	  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 	  <script src="//d3js.org/topojson.v1.min.js"></script>
+	  <script src="{% static 'js/chart.js' %}"></script>
+	  <script src="{% static 'js/table.js' %}"></script>
+	  
 	  <style type="text/css">
 		.legend rect {
 		  fill:white;
 		  stroke:black;
 		  opacity:0.8;
+		}
+
+		#my3dplot {
+			width: 1000px;
+			height: 500px;
+			margin-bottom: 20px;
 		}
 	  </style>
 </head>
@@ -132,7 +141,6 @@
 	    		var result = {{ parameter.resultToJson|safe }};
 	    		var score = {{ parameter.calculate_sc|safe }};
 	    		console.log("score: " + score);
-	    		console.log(result);
 	    		var dict = [];
 	    		result.data.forEach(function(d) {
 	    			dict.push({
@@ -170,42 +178,42 @@
 	    									  	}
 	    								});
 
-			var cluster_legend = [];
-			dict.forEach(function(d) {
-				if (cluster_legend.includes(d.cluster) == false) {
-					cluster_legend.push(d.cluster);
-				}
-			});
+				var cluster_legend = [];
+				dict.forEach(function(d) {
+					if (cluster_legend.includes(d.cluster) == false) {
+						cluster_legend.push(d.cluster);
+					}
+				});
 
-			function createLegend(container) {	
+				function createLegend(container) {	
 
-				var legend = container.selectAll('g')
-							    .data(cluster_legend.sort())
-							    .enter().append('g')
-							    .attr('class', 'legend')
-							    .attr("transform","translate(20,30)");
+					var legend = container.selectAll('g')
+								    .data(cluster_legend.sort())
+								    .enter().append('g')
+								    .attr('class', 'legend')
+								    .attr("transform","translate(20,30)");
 
-							legend.append("path")
-							  .attr("class", "line");
+								legend.append("path")
+								  .attr("class", "line");
 
-							legend.append('circle')
-							    .attr('cx', 20)
-							    .attr('cy', function(d, i){ return i *  20;})
-							    .attr("r","0.4em")
-							    .attr('width', 10)
-							    .attr('height', 10)
-							    .style('fill', function(d) {
-							      return color(d);
-							    });
+								legend.append('circle')
+								    .attr('cx', 20)
+								    .attr('cy', function(d, i){ return i *  20;})
+								    .attr("r","0.4em")
+								    .attr('width', 10)
+								    .attr('height', 10)
+								    .style('fill', function(d) {
+								      return color(d);
+								    });
 
-							legend.append('text')
-							    .attr('x', 40 - 8)
-							    .attr('y', function(d, i){ return (i *  20) + 9;})
-							    .text(function(d){
-							    		return "Cluster " + d;
-							    	});
-				return legend
-			};
+								legend.append('text')
+								    .attr('x', 40 - 8)
+								    .attr('y', function(d, i){ return (i *  20) + 9;})
+								    .text(function(d){
+								    		return "Cluster " + d;
+								    	});
+					return legend
+				};
 
 			createLegend(areaContainer);
 
@@ -249,7 +257,6 @@
 			  						 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 	    			var bar = dict.filter(element => element.kabupaten == d.kabupaten);
-	    			//console.log(bar);
 	    			xScale.domain(bar.map(function(d) { 
 	    				return d.tahun; }));
 	    			yScale.domain([d3.min(bar, function(d) {
@@ -301,9 +308,16 @@
 				    					.style('opacity', 0)
 				    		});
 				});
-				
+
+				// plot 3D
+				plot3d(dict, color);
+
 				// Create table
-				tabulate(result.data, ['kabupaten', 'longitude', 'latitude', 'tahun', 'ipm', 'cluster']);
+				var tbody = d3.select('#data-fill')
+							  .call(tabulate, result.data, 
+							  		['kabupaten', 'longitude', 
+							  		 'latitude', 'tahun', 
+							  		 'ipm', 'cluster']);
 	    	});
 		</script>
 	{% endfor %}
@@ -314,8 +328,7 @@
 		<script src="{% static 'datatables/jquery.dataTables.js' %}"></script>
 	    <script src="{% static 'datatables/dataTables.bootstrap4.js' %}"></script>
 	    <!-- custom tables -->
-	    <script src="{% static 'js/sb-admin.min.js' %}"></script>
-	    <script src="{% static 'js/sb-admin-datatables.min.js' %}"></script>
-	    <script src="{% static 'js/table.js' %}"></script>
+<!-- 	    <script src="{% static 'js/sb-admin.min.js' %}"></script>
+	    <script src="{% static 'js/sb-admin-datatables.min.js' %}"></script> -->
 </body>
 </html>	
