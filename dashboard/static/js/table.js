@@ -1,4 +1,4 @@
-function tabulate(dataset, columns) {
+function tabulate(selection, dataset, columns) {
 	// render the tables: create new dict for table
 	var dictTable = [];
 	dataset.forEach(function(d) {
@@ -12,7 +12,7 @@ function tabulate(dataset, columns) {
 	    			});
 	});
 
-	var tbody = d3.select('#data-fill');
+	// var tbody = d3.select('#data-fill');
 		// thead = table.append('thead'),
 		// tbody = table.append('tbody'),
 		// tfoot = table.append('tfoot');
@@ -34,7 +34,7 @@ function tabulate(dataset, columns) {
 	// 	 	.text(function (column) { return column; });
 
 	// create a row for each object in data
-	var rows = tbody.selectAll('tr')
+	var rows = selection.selectAll('tr')
 					.data(dictTable)
 					.enter()
 					.append('tr');
@@ -49,6 +49,4 @@ function tabulate(dataset, columns) {
 					.enter()
 					.append('td')	
 					.text(function(d) { return d.value});
-
-	return tbody
 }

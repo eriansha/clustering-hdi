@@ -11,34 +11,34 @@
 			    <li class="breadcrumb-item active">My Dashboard</li>
 		    </ol>
 		    <!-- Area Chart Example-->
-		    <div class="card mb-3">
-		        <div class="card-header">
-		          	<i class="fa fa-area-chart"></i> Clustering result
-			          	{% for parameter in parameters %}
-							(eps1: {{ parameter.eps1 }}, eps2: {{ parameter.eps2 }}, minPts: {{ parameter.minPts }}, de: {{ parameter.de }})
-						{% endfor %}	
-		        </div>
-			    <div class="card-body" id="myAreaChart"></div>
-			    <div class="card-footer small text-muted"></div>
-		    </div>
-
 		    <div class="row">
+		    	<div class="col-lg-12">
+				    <div class="card mb-3">
+				        <div class="card-header">
+				          	<i class="fa fa-area-chart"></i> Clustering result
+					          	{% for parameter in parameters %}
+									(eps1: {{ parameter.eps1 }}, eps2: {{ parameter.eps2 }}, minPts: {{ parameter.minPts }}, de: {{ parameter.de }})
+								{% endfor %}	
+				        </div>
+					    <div class="card-body" id="myAreaChart"></div>
+					    <div class="card-footer small text-muted"></div>
+				    </div>
+				</div>
+			</div>
+		    <div class="row">
+		    	<!-- Bar Chart -->
 		       	<div class="col-lg-7">
-		        <!-- Example Bar Chart Card-->
 			        <div class="card mb-3">
 			          	<div class="card-header" id='bar-header'>
 			           		<i class="fa fa-bar-chart"></i> Bar Chart
 			            </div>
-			            <div class="card-body">
-			              	<div class="row" id="myBarChart"></div>
-			            </div>
+			            <div class="card-body" id="myBarChart"></div>
 			            <div class="card-footer small text-muted"></div>
 			        </div>
 	     		</div>
-	          	<!-- /Card Columns-->
+	     		<!-- Pie Chart -->
 	        	<div class="col-lg-5">
-	          		<!-- Example Pie Chart Card-->
-	          		<div class="card mb-5">
+	          		<div class="card mb-3">
 	            		<div class="card-header">
 	              			<i class="fa fa-pie-chart"></i> Pie Chart 
 	              		</div>
@@ -47,52 +47,53 @@
 	          		</div>  
 	        	</div>
 	      	</div>
-
 	      	<!-- 3D plot -->
 	      	<div class='row'>
 	      		<div class="col-lg-12">
-	      			<div class="card mb-5">
+	      			<div class="card mb-3">
 	            		<div class="card-header">
-	              			<i class="fa fa-pie-chart"></i> 3D Plot
+	              			<i class="fa fa-bar-chart"></i> 3D Plot
 	              		</div>
-	            	<div class="card-body" id="my3dplot">
-	            	</div>
-	            	<div class="card-footer small text-muted"></div>
+	            		<div class="card-body" id="my3dplot"></div>
+	            		<div class="card-footer small text-muted"></div>
+	      			</div>
 	      		</div>
 	      	</div>
-	    </div>
-	</div>
-	<div class="card mb-3">
-	    <div class="card-header">
-	    <i class="fa fa-table"></i> Data Table Example</div>
-	    <div class="card-body">
-	        <div class="table-responsive">
-	           	<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-	              	<thead>
-				        <tr>
-				            <th>Kabupaten</th>
-				            <th>Longitude</th>
-				            <th>Latitude</th>
-				            <th>Tahun</th>
-				            <th>IPM</th>
-				            <th>Cluster</th>
-				        </tr>
-	              	</thead>
-	               	<tfoot>
-		                <tr>
-		                  <th>Kabupaten</th>
-		                  <th>Longitude</th>
-		                  <th>Latitude</th>
-		                  <th>Tahun</th>
-		                  <th>IPM</th>
-		                  <th>Cluster</th>
-		                </tr>
-		            </tfoot>
-	                <tbody id="data-fill">
-	                </tbody>
-	            </table>
-	        </div>
-	    </div>
+	      	<!-- Table -->
+	      	<div class='row'>
+	      		<div class="col-lg-12">
+					<div class="card mb-3">
+						<div class="card-header">
+						    <i class="fa fa-table"></i> Data Table Example</div>
+						<div class="card-body table-responsive">
+						    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+							    <thead>
+									<tr>
+										<th>Kabupaten</th>
+										<th>Longitude</th>
+										<th>Latitude</th>
+										<th>Tahun</th>
+										<th>IPM</th>
+										<th>Cluster</th>
+									</tr>
+							 	</thead>
+							    <tfoot>
+								   	<tr>
+									  	<th>Kabupaten</th>
+									    <th>Longitude</th>
+									    <th>Latitude</th>
+									    <th>Tahun</th>
+									    <th>IPM</th>
+									    <th>Cluster</th>
+								    </tr>
+								</tfoot>
+							    <tbody id="data-fill"></tbody>
+					       	</table>
+					    </div>
+			    	</div>
+				</div>
+			</div>
+		</div>
 	</div>
 {% endblock %}
     
