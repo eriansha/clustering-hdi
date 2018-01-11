@@ -41,3 +41,13 @@ div.tooltip {
   stroke-width: 1;
   shape-rendering: crispEdges;
 }
+
+#kmeans-score h2 {
+  font: 100px sans-serif;
+  text-align: center;
+}
+
+#stdbscan-score h2 {
+  font: 100px sans-serif;
+  text-align: center;
+}

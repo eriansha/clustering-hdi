@@ -140,7 +140,6 @@
 
 	    		var result = {{ parameter.resultToJson|safe }};
 	    		var score = {{ parameter.calculate_sc|safe }};
-	    		console.log("score: " + score);
 	    		var dict = [];
 	    		result.data.forEach(function(d) {
 	    			dict.push({
@@ -308,6 +307,9 @@
 				    					.style('opacity', 0)
 				    		});
 				});
+	    		// silhouette score
+				d3.select('#stdbscan-score')
+				  .html("<h2>" + score.toFixed(4) + "</h2>");
 
 				// Create table
 				var tbody = d3.select('#data-fill')

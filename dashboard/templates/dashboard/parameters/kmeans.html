@@ -309,6 +309,10 @@
 				    		});
 				});
 
+				// silhouette score
+				d3.select('#kmeans-score')
+				  .html("<h2>" + score.toFixed(4) + "</h2>");
+
 				// Create table
 				var tbody = d3.select('#data-fill')
 							  .call(tabulate, result.data, 
