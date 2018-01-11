@@ -21,6 +21,9 @@ def result_table(request):
 	parameters = Parameters.objects.all()
 	return render(request, 'dashboard/parameters/result_table.html', {'parameters': parameters})
 
+def choose_algo(request):
+	return render(request, 'dashboard/parameters/choose_algo.html')
+
 def input_param(request):
 	if request.method == 'POST':
 		form = PostParam(request.POST, request.FILES)

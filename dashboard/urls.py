@@ -7,6 +7,7 @@ urlpatterns = [
 	url(r'^dashboard/$', views.dashboard, name='dashboard'),
 	url(r'^charts/$', views.charts, name='charts'),
 	url(r'^result_table/$', views.result_table, name='result_table'),
+	url(r'^choose_algo/$', views.choose_algo, name='choose_algo'),
 	url(r'^input/$', views.input_param, name='input'),
 	url(r'^menu/$', views.menu, name='menu')
 ]
