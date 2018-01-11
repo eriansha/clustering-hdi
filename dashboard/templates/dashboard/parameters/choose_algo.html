@@ -18,13 +18,17 @@
 				<div class='box-param'>
 					<div class='vertical-menu'>
 						<h3>Choose Algorithm</h3>
-						<form action="" method="post">
+<!-- 						<form action="" method="POST">
 							<input type='button' name='st-dbscan' value='ST-DBSCAN'>
-	<!-- 							<a href="{% url 'dashboard:input' %}">
-									ST-DBSCAN
-								</a> -->
+								ST-DBSCAN
 							<input type='button' name='k-means' value='K-means'>
-						</form>
+						</form> -->
+						<a class="btn btn-primary" href="{% url 'dashboard:stdbscan_input' %}">
+							ST-DBSCAN
+						</a>
+						<a class="btn btn-primary" href="{% url 'dashboard:kmeans_input' %}">
+							K-Means
+						</a>
 					</div>
 				</div>
 			</div>

@@ -1,0 +1,99 @@
+{% extends 'dashboard/parameters/kmeans.html' %}
+
+{% block content %}
+	<div>
+		<div class="container-fluid">
+		      	<!-- Breadcrumbs-->	
+		    <ol class="breadcrumb">
+			    <li class="breadcrumb-item">
+			        <a href="#">Dashboard</a>
+			    </li>
+			    <li class="breadcrumb-item active">My Dashboard</li>
+		    </ol>
+		    <!-- Area Chart Example-->
+		    <div class="row">
+		    	<div class="col-lg-12">
+				    <div class="card mb-3">
+				        <div class="card-header">
+				          	<i class="fa fa-area-chart"></i> Clustering result
+					          	{% for parameter in parameters %}
+									(k: {{ parameter.k }})
+								{% endfor %}	
+				        </div>
+					    <div class="card-body" id="myAreaChart"></div>
+					    <div class="card-footer small text-muted"></div>
+				    </div>
+				</div>
+			</div>
+		    <div class="row">
+		    	<!-- Bar Chart -->
+		       	<div class="col-lg-7">
+			        <div class="card mb-3">
+			          	<div class="card-header" id='bar-header'>
+			           		<i class="fa fa-bar-chart"></i> Bar Chart
+			            </div>
+			            <div class="card-body" id="myBarChart"></div>
+			            <div class="card-footer small text-muted"></div>
+			        </div>
+	     		</div>
+	     		<!-- Pie Chart -->
+	        	<div class="col-lg-5">
+	          		<div class="card mb-3">
+	            		<div class="card-header">
+	              			<i class="fa fa-pie-chart"></i> Pie Chart 
+	              		</div>
+	            		<div class="card-body" id="myPieChart"></div>
+	            		<div class="card-footer small text-muted"></div>
+	          		</div>  
+	        	</div>
+	      	</div>
+	      	<!-- 3D plot -->
+	      	<div class='row'>
+	      		<div class="col-lg-12">
+	      			<div class="card mb-3">
+	            		<div class="card-header">
+	              			<i class="fa fa-bar-chart"></i> 3D Plot
+	              		</div>
+	            		<div class="card-body" id="my3dplot"></div>
+	            		<div class="card-footer small text-muted"></div>
+	      			</div>
+	      		</div>
+	      	</div>
+	      	<!-- Table -->
+	      	<div class='row'>
+	      		<div class="col-lg-12">
+					<div class="card mb-3">
+						<div class="card-header">
+						    <i class="fa fa-table"></i> Data Table Example</div>
+						<div class="card-body table-responsive">
+						    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+							    <thead>
+									<tr>
+										<th>Kabupaten</th>
+										<th>Longitude</th>
+										<th>Latitude</th>
+										<th>Tahun</th>
+										<th>IPM</th>
+										<th>Cluster</th>
+									</tr>
+							 	</thead>
+							    <tfoot>
+								   	<tr>
+									  	<th>Kabupaten</th>
+									    <th>Longitude</th>
+									    <th>Latitude</th>
+									    <th>Tahun</th>
+									    <th>IPM</th>
+									    <th>Cluster</th>
+								    </tr>
+								</tfoot>
+							    <tbody id="data-fill"></tbody>
+					       	</table>
+					    </div>
+			    	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+    

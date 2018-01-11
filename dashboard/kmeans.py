@@ -1,3 +1,6 @@
+import numpy as np
+import math
+
 def kmeans(dataset, k, epsilon=0):
     
     history_centroids = []
@@ -34,7 +37,9 @@ def kmeans(dataset, k, epsilon=0):
 
         history_centroids.append(tmp_centroids)
 
-    return centroids, history_centroids, belongs_to
+    return belongs_to
+    # , history_centroids, belongs_to
 
 def euclidian(a, b):
-    return math.sqrt(np.power(a, b).sum())
+    # return math.sqrt(np.power(a, b).sum())
+    return np.linalg.norm(a-b)

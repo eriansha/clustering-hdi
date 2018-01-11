@@ -41,7 +41,7 @@
 <body class="fixed-nav bg-dark" id="page-top">
 	<!-- Navigation-->
   	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    	<a class="navbar-brand" href="{% url 'dashboard:dashboard' %}">Cluster-Dashboard	</a>
+    	<a class="navbar-brand" href="{% url 'dashboard:stdbscan_dashboard' %}">Cluster-Dashboard	</a>
     	<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       		<span class="navbar-toggler-icon"></span>
     	</button>
@@ -51,20 +51,20 @@
 	     	<ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
 	      		<!-- Dashboard -->
 	        	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-	          		<a class="nav-link" href="{% url 'dashboard:dashboard' %}">
+	          		<a class="nav-link" href="{% url 'dashboard:stdbscan_dashboard' %}">
 	            		<i class="fa fa-fw fa-dashboard"></i>
 	            		<span class="nav-link-text">Dashboard</span>
 	          		</a>
 	        	</li>
 	        	<!-- Chart -->
 	        	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-	          		<a class="nav-link" href="{% url 'dashboard:charts' %}">
+	          		<a class="nav-link" href="{% url 'dashboard:stdbscan_charts' %}">
 	            		<span class="nav-link-text">Charts</span>
 	          		</a>
 	        	</li>
 	        	<!-- Tables -->
 	        	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-	          		<a class="nav-link" href="{% url 'dashboard:result_table' %}">
+	          		<a class="nav-link" href="{% url 'dashboard:stdbscan_table' %}">
 	            		<span class="nav-link-text">Tables</span>
 	          		</a>
 	        	</li>
@@ -72,7 +72,7 @@
 	      	<!-- Logout (back) -->
 	      	<ul class="navbar-nav ml-auto">
 	        	<li class="nav-item">
-	          		<a class="nav-link" href="{% url 'dashboard:input' %}">
+	          		<a class="nav-link" href="{% url 'dashboard:stdbscan_input' %}">
 	            		Back
 	            	</a>
 	        	</li>
@@ -309,15 +309,15 @@
 				    		});
 				});
 
-				// plot 3D
-				plot3d(dict, color);
-
 				// Create table
 				var tbody = d3.select('#data-fill')
 							  .call(tabulate, result.data, 
 							  		['kabupaten', 'longitude', 
 							  		 'latitude', 'tahun', 
 							  		 'ipm', 'cluster']);
+
+				// plot 3D
+				plot3d(dict, color);
 	    	});
 		</script>
 	{% endfor %}

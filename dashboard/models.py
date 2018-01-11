@@ -1,5 +1,6 @@
 from django.db import models
 from dashboard.stdbscan import *
+from dashboard.kmeans import *
 import numpy as np
 import pandas as pd
 from sklearn.metrics import silhouette_score
@@ -46,3 +47,33 @@ class STDBSCAN(models.Model):
 
 		return score
 
+class KMeans(models.Model):
+	IPM_file = models.FileField(upload_to='datasets/', default="")
+	k = models.IntegerField()
+
+	def run_kmeans(self):
+		load_data = self.IPM_file
+		dataset_ipm_jawa = np.genfromtxt(load_data, delimiter=',', skip_header=1)
+		dataset_ipm_jawa = np.delete(dataset_ipm_jawa, 0, 1)
+
+		result = kmeans(dataset_ipm_jawa, self.k)
+
+		return result
+
+	def resultToJson(self):
+		df_dataset = pd.read_csv(self.IPM_file)
+		df_result = pd.DataFrame(self.run_kmeans(), columns =['cluster'])
+
+		df = pd.concat((df_dataset, df_result+1), axis=1)
+
+		return df.to_json(orient='split')
+
+	def kmeans_score(self):
+		load_data = self.IPM_file
+		dataset_ipm_jawa = np.genfromtxt(load_data, delimiter=',', skip_header=1)
+		dataset_ipm_jawa = np.delete(dataset_ipm_jawa, 0, 1)
+		result = self.run_kmeans()
+
+		score = silhouette_score(dataset_ipm_jawa, result.ravel())
+
+		return score
