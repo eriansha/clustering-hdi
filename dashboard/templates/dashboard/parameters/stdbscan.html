@@ -86,6 +86,19 @@
 
     {% for parameter in parameters %}
 	    <script>
+	    	var result = {{ parameter.resultToJson|safe }};
+	    	var score = {{ parameter.calculate_sc|safe }};
+	    	var dict = [];
+	    	result.data.forEach(function(d) {
+	    		dict.push({
+	    				"kabupaten": d[0],
+	    				"coordinate": [d[1], d[2]],
+	    				"tahun": d[3],
+	    				"ipm": d[4],
+	    				"cluster": d[5],
+	    		});
+	    	});
+
 	    	var margin = {
 	    			top: 10,
 	    			right: 10,
@@ -99,228 +112,42 @@
 
 	    	// container for area chart
 	    	var areaContainer = d3.select('#myAreaChart').append('svg')
-	    												.attr('width', areaWidth)
-	    												.attr('height', areaHeight);
+	    												 .attr('width', areaWidth)
+	    												 .attr('height', areaHeight);
 
 
-	    	// Define 'div' for tooltips
+	    	// tooltips
 			var tooltip = d3.select(".card-body")
-						.append("div")  
-						.attr("class", "tooltip")
-						.style("opacity", 0);
+						    .append("div")  
+							.attr("class", "tooltip")
+							.style("opacity", 0);
+
+			// random coloring for circle
+	    	var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 	    	d3.json('/static/json/jawafix.json', function(error, data) {
 	    		if(error) return console.error(error);
-	    		// console.log(data);
 
-	    		var center = d3.geoCentroid(topojson.feature(data, data.objects.jawa));
-	    		var subunits = topojson.feature(data, data.objects.jawa);
-
-				var projection =  d3.geoMercator()
-	    							.center(center)
-	    							.scale(7000)
-     								.translate([areaWidth /2, areaHeight /2]);
-
-				var path = d3.geoPath()
-	    					 .projection(projection);
-
-	    		areaContainer.append('path')
-	    					.datum(subunits)
-	    					.attr('d', path);
-
-	    		areaContainer.selectAll(".provinsi")
-	    					.data(topojson.feature(data, data.objects.jawa).features)
-	    					.enter()
-	    					.append('path')
-	    					.attr('class', function(d) { 
-	    						//console.log(d);
-	    						var namaProv = d.id.replace(/\s/g, "");
-	    						return "provinsi " + namaProv })
-	    					.attr('d', path);
-
-	    		var result = {{ parameter.resultToJson|safe }};
-	    		var score = {{ parameter.calculate_sc|safe }};
-	    		var dict = [];
-	    		result.data.forEach(function(d) {
-	    			dict.push({
-	    				"kabupaten": d[0],
-	    				"coordinate": [d[1], d[2]],
-	    				"tahun": d[3],
-	    				"ipm": d[4],
-	    				"cluster": d[5],
-	    			});
-	    		});
-
-	    		// random coloring for circle
-	    		var color = d3.scaleOrdinal(d3.schemeCategory10);
-
-	    		// add circle to svg
-	    		var circles = areaContainer.selectAll('circle')
-	    								   .data(dict)
-	    								   .enter()
-	    								   .append('circle');
-
-	    		var circleAttr = circles.attr('cx', function(d) {
-	    									var coordinate = d.coordinate;
-	    									return projection(coordinate)[0]; 
-	    								})
-	    								.attr('cy', function(d) {
-	    									var coordinate = d.coordinate; 
-	    									return projection(coordinate)[1];
-	    								})
-	    								.attr('r', '6px')
-	    								.attr('fill', function(d) {
-	    								//console.log(d[2]);
-	    								if (d.cluster == -1) return '#000'
-	    									else {
-	    									  	return color(d.cluster);
-	    									  	}
-	    								});
-
-				var cluster_legend = [];
-				dict.forEach(function(d) {
-					if (cluster_legend.includes(d.cluster) == false) {
-						cluster_legend.push(d.cluster);
-					}
-				});
-
-				function createLegend(container) {	
-
-					var legend = container.selectAll('g')
-								    .data(cluster_legend.sort())
-								    .enter().append('g')
-								    .attr('class', 'legend')
-								    .attr("transform","translate(20,30)");
-
-								legend.append("path")
-								  .attr("class", "line");
-
-								legend.append('circle')
-								    .attr('cx', 20)
-								    .attr('cy', function(d, i){ return i *  20;})
-								    .attr("r","0.4em")
-								    .attr('width', 10)
-								    .attr('height', 10)
-								    .style('fill', function(d) {
-								      return color(d);
-								    });
-
-								legend.append('text')
-								    .attr('x', 40 - 8)
-								    .attr('y', function(d, i){ return (i *  20) + 9;})
-								    .text(function(d){
-								    		return "Cluster " + d;
-								    	});
-					return legend
-				};
-
-			createLegend(areaContainer);
-
-
-	    		// hovering tooltips
-	    		circleAttr.on("mouseover", function(d) {
-	    			tooltip.transition(200)
-	    				   .duration(200)
-	    				   .style('opacity', 0.9);
-	    			tooltip.text(d.kabupaten)
-	    				   .style('left', (d3.event.pageX - 10) + "px")
-	    				   .style('top', (d3.event.pageY - 65) + "px");
-	    		})
-	    		.on("mouseout", function(d) {
-	    			tooltip.transition()
-	    					.duration(500)
-	    					.style('opacity', 0)
-	    		});
-
-	    		// add bar chart while click the plot
-	    		circleAttr.on("click", function(d) {
-	    			d3.select('#myBarChart')
-	    			  .selectAll('svg').remove();
-
-	    			d3.select('#bar-header')
-	    			  .html('<i class="fa fa-bar-chart"></i> Bar Chart: ' + d.kabupaten);
-	  		
-			  		// x-scale and y-scale
-			  		var xScale = d3.scaleBand()
-			  					   .rangeRound([0, barWidth], .4),
-			  			yScale = d3.scaleLinear().range([barHeight, 0]);
-
-			  		var xAxis = d3.axisBottom(xScale),
-			  			yAxis = d3.axisLeft(yScale);
-
-			  		var barChart = d3.select('#myBarChart')
-			  						 .append('svg')
-			  						 .attr('width', barWidth + margin.left + margin.right)
-			  						 .attr('height', barHeight + margin.top + margin.bottom)
-			  						 .append('g')
-			  						 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-	    			var bar = dict.filter(element => element.kabupaten == d.kabupaten);
-	    			xScale.domain(bar.map(function(d) { 
-	    				return d.tahun; }));
-	    			yScale.domain([d3.min(bar, function(d) {
-					    				return d.ipm-2.5; }),
-					    		   d3.max(bar, function(d) {
-					    				return d.ipm; })]);
-
-	    			barChart.append("g")
-					        .attr("class", "x axis")
-					        .attr("transform", "translate(0," + 
-					        	barHeight + ")")
-					        .call(xAxis);
-
-					barChart.append("g")
-					        .attr("class", "y axis")
-					        .call(yAxis);
-
-					barChart.selectAll(".bar")
-			        	 .data(bar)
-			      		 .enter()
-			      		 	.append("rect")
-			        		.attr("class", "bar")
-			        		.attr("x", function(d) { 
-			        			return xScale(d.tahun); })
-			        		.attr("y", function(d) { 
-			        			return yScale(d.ipm); })
-			        		.attr("height", function(d) { 
-			        			return barHeight - yScale(d.ipm); })
-			        		.attr("width", xScale.bandwidth())
-			        		.attr('fill', function(d) {
-	    								//console.log(d[2]);
-	    								if (d.cluster == -1) return '#000'
-	    								else {
-	    									return color(d.cluster);
-	    							  		}
-	    					})
-			        		.on("mouseover", function(d) {
-				    			tooltip.transition(200)
-				    				   .duration(200)
-				    				   .style('opacity', 0.9);
-				    			tooltip.html('tahun ' + d.tahun + '<br>'
-				    						+ d.ipm)
-				    				   .style('left', (d3.event.pageX - 10) + "px")
-				    				   .style('top', (d3.event.pageY - 65) + "px");
-				    		})
-				    		.on("mouseout", function(d) {
-				    			tooltip.transition()
-				    					.duration(500)
-				    					.style('opacity', 0)
-				    		});
-				});
-	    		// silhouette score
-				d3.select('#stdbscan-score')
-				  .html("<h2>" + score.toFixed(4) + "</h2>");
-
-				// Create table
-				var tbody = d3.select('#data-fill')
-							  .call(tabulate, result.data, 
-							  		['kabupaten', 'longitude', 
-							  		 'latitude', 'tahun', 
-							  		 'ipm', 'cluster']);
-
-				// plot 3D
-				plot3d(dict, color);
+	    		// geo scatter
+	    		areaContainer.call(geo_scatter, data, color);
 	    	});
+
+			// silhouette score
+			d3.select('#stdbscan-score')
+			  .html("<h2>" + score.toFixed(4) + "</h2>");
+
+			// Create table
+			var tbody = d3.select('#data-fill')
+						  .call(tabulate, result.data, 
+							  	['kabupaten', 'longitude', 
+							  	 'latitude', 'tahun', 
+							  	 'ipm', 'cluster']);
+
+			// plot 3D
+			var my3dplot = document.getElementById("my3dplot");
+			if (my3dplot) {
+				plot3d(dict, color);
+			}
 		</script>
 	{% endfor %}
 		<!--Bootstrap core JavaScript -->
