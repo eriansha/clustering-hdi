@@ -40,7 +40,7 @@ class STDBSCAN(models.Model):
 
 		return df.to_json(orient='split')
 
-	def calculate_sc(self):
+	def stdbscan_score(self):
 		# calculate Silhoutte Coeffecient
 		result = self.run_stdbscan()
 		score = silhouette_score(result[:,:4], result[:,4])

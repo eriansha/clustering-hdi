@@ -87,7 +87,7 @@
     {% for parameter in parameters %}
 	    <script>
 	    	var result = {{ parameter.resultToJson|safe }};
-	    	var score = {{ parameter.calculate_sc|safe }};
+	    	var score = {{ parameter.stdbscan_score|safe }};
 	    	var dict = [];
 	    	result.data.forEach(function(d) {
 	    		dict.push({
