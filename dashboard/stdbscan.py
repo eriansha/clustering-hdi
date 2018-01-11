@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-def ST_DBSCAN(dataset, spatial_threshold, temporal_threshold, minPts, de):
+def st_dbscan(dataset, spatial_threshold, temporal_threshold, minPts, de):
     """
     Python st-dbscan implementation.
     INPUTS:

@@ -136,7 +136,7 @@
 	    						//console.log(d);
 	    						var namaProv = d.id.replace(/\s/g, "");
 	    						return "provinsi " + namaProv })
-	    					.attr('d', path)
+	    					.attr('d', path);
 
 	    		var result = {{ parameter.resultToJson|safe }};
 	    		var score = {{ parameter.calculate_sc|safe }};

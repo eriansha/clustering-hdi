@@ -1,8 +1,8 @@
 from django import forms
-from .models import Parameters
+from .models import STDBSCAN
 
-class PostParam(forms.ModelForm):
+class STDBSCANParam(forms.ModelForm):
 
 	class Meta:
-		model = Parameters
+		model = STDBSCAN
 		fields = ('IPM_file', 'eps1', 'eps2', 'minPts', 'de')
