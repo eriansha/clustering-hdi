@@ -14,12 +14,10 @@ def st_dbscan(dataset, spatial_threshold, temporal_threshold, minPts, de):
     OUTPUT:
         C = {c1,c2,...,ck} Set of clusters
     """
-    #print('parameter')
     cluster_label = 0
     noise = -1
     unmarked = 7777
     stack = []
-    # global centre_index = []
     
     # initialize each point with unmarked in 4th index column    
     cluster_column = []
@@ -138,12 +136,8 @@ def retrieveNeighbors(index_center, dataset, spatial_threshold, temporal_thresho
     spatial_data = dataset[:,0:2]
     temporal_data = dataset[:,2]
     
-    # find spatial neighborhood
     spatialNeigh = FindNeighborhood(index_center, spatial_data, spatial_threshold)
     temporalNeigh = FindNeighborhood(index_center, temporal_data, temporal_threshold)
-    
-    # print("spatialNeigh: {}".format(spatialNeigh))
-    # print("temporalNeigh: {}".format(temporalNeigh))
     
     # find intersaction between spatial neighborhood and temporal neighborhood
     neighborhood = list(set(spatialNeigh) & set(temporalNeigh))
@@ -155,7 +149,7 @@ def FindNeighborhood(index_center, candidates, threshold):
     neigh_dist = []
     distance = 0
     for index_candidate in range(candidates.shape[0]):
-        if index_candidate == index_center: #or np.all(candidates[index_center] == candidates[index_candidate]):
+        if index_candidate == index_center:
             continue
         else:
             x1 = candidates[index_center]
