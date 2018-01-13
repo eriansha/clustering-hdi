@@ -6,7 +6,7 @@ body {
 
 .page-header {
 	text-align: center;
-    margin-top: 20px;
+    margin-top: 30px;
     padding: 20px 20px 20px 20px;
 }
 
@@ -23,7 +23,7 @@ body {
 
 .Absolute-Center.is-Responsive {
   width: 50%; 
-  height: 65%;
+  height: 55%;
 }
 
 .box-param {
@@ -49,11 +49,38 @@ body {
 	padding-bottom: 5px;
 }
 
+.sub-header ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.sub-header  li {
+	display: inline-block;
+	padding: 0px;
+	margin: 0px;
+}
+
+.sub-header p {
+	font-size: 20px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.back-top-right {
+	color: #ffffff;
+	padding-left: 350px;
+}
+
 .vertical-menu a {
 	display: block;
-	text-decoration: none;
 	padding: 10px;
 	margin: 15px;
+}
+
+.vertical-menu p {
+	font-size: 14px;
+	text-align: justify;
 }
 
 hr {
@@ -63,12 +90,4 @@ hr {
     border-top: 1px solid #ccc;
     margin: 1em 0;
     padding: 0;
-}
-
-.vertical-menu .sub-header {
-	font-size: 20px;
-}
-
-.vertical-menu p {
-	font-size: 14px;
 }

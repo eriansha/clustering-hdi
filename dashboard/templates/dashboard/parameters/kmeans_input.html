@@ -18,20 +18,30 @@
 		<div class='row'>
 			<div class="Absolute-Center is-Responsive">
 				<div class='box-param'>
-					<h1>Insert parameters</h1>
-					<p>this parameters is needed for clustering algorithm</p>
-					{% load bootstrap4 %}
-					<form method='post' class='form' enctype="multipart/form-data">
-						<div class="form-group">
-							{% csrf_token %}
-							{% bootstrap_form form %}
-							{% buttons %}
-								<button type='submit' class='btn btn-primary'>
-									Start K-means
-								</button>
-							{% endbuttons %}
-						</div>
-					</form>
+					<div class='sub-header'>
+						<ul>
+							<li><p>K-Means Input</p></li>
+							<li>
+								<a class='back-top-right' href="{% url 'dashboard:choose_algo' %}">
+									back
+								</a>
+							</li>
+						</ul>
+						<hr>
+						<p>this parameters is needed for clustering algorithm</p>
+						{% load bootstrap4 %}
+						<form method='post' class='form' enctype="multipart/form-data">
+							<div class="form-group">
+								{% csrf_token %}
+								{% bootstrap_form form %}
+								{% buttons %}
+									<button type='submit' class='btn btn-primary'>
+										Start K-means
+									</button>
+								{% endbuttons %}
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

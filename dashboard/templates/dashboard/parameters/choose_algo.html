@@ -16,13 +16,17 @@
 	    <div class='row'>
 			<div class="Absolute-Center is-Responsive">
 				<div class='box-param'>
+					<div class='sub-header'>
+						<ul>
+							<li><p>Pilih Algoritma</p></li>
+							<li><a class='back-top-right' href="{% url 'dashboard:menu' %}">
+								back
+								</a>
+							</li>
+						</ul>
+					</div>
+					<hr>
 					<div class='vertical-menu'>
-						<h3>Choose Algorithm</h3>
-<!-- 						<form action="" method="POST">
-							<input type='button' name='st-dbscan' value='ST-DBSCAN'>
-								ST-DBSCAN
-							<input type='button' name='k-means' value='K-means'>
-						</form> -->
 						<a class="btn btn-primary" href="{% url 'dashboard:stdbscan_input' %}">
 							ST-DBSCAN
 						</a>
