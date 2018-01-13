@@ -13,6 +13,8 @@ urlpatterns = [
 	url(r'^kmeans_charts/$', views.kmeans_charts, name='kmeans_charts'),
 	url(r'^kmeans_table/$', views.kmeans_table, name='kmeans_table'),
 	url(r'^choose_algo/$', views.choose_algo, name='choose_algo'),
+	url(r'^bantuan/$', views.bantuan, name='bantuan'),
+	url(r'^tentang/$', views.tentang, name='tentang'),
 	url(r'^menu/$', views.menu, name='menu')
 ]
 

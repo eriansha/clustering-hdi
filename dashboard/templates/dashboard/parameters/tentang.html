@@ -1,0 +1,30 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Main menu</title>
+	<link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+	<!-- Custom fonts for this template-->
+	<link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+</head>
+<body class='bg-dark'>
+	<div class='container'>
+		<div class="page-header">
+	        <h1 align='center'>Human Development Index Clustering</h1>
+	    </div>
+	    <div class='row'>
+			<div class="Absolute-Center is-Responsive">
+				<div class='box-param'>
+					<div class='vertical-menu'>
+						<h3 class='sub-header'>Tentang Aplikasi</h3>
+						<hr>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam aliquet eros eget accumsan tempor. Etiam sit amet felis egestas, eleifend nibh ac, gravida turpis. Proin at mauris pretium orci sollicitudin varius pretium vel dolor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent vulputate ut quam pulvinar sollicitudin. Aliquam id blandit ipsum. Donec porta, ex eu blandit venenatis, lorem nunc molestie dui, quis lacinia tortor ligula vel turpis. Integer eros nibh, interdum fringilla diam eget, mattis varius nunc. Mauris vel elementum risus. Vestibulum accumsan nunc non nulla tincidunt convallis. Morbi dictum est sollicitudin sollicitudin pellentesque. Aliquam erat volutpat. Nunc facilisis sodales dolor ut euismod. Pellentesque viverra odio egestas diam elementum, nec tempor turpis cursus. Nam fermentum magna at turpis pharetra varius. Aenean nec est quis nisl tincidunt molestie vitae vitae risus.</p>
+						<a class="btn btn-primary" href="{% url 'dashboard:menu' %}">Kembali</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

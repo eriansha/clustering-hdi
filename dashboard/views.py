@@ -12,6 +12,12 @@ from django.core.files.storage import FileSystemStorage
 def menu(request):
 	return render(request, 'dashboard/parameters/index.html')
 
+def tentang(request):
+	return render(request, 'dashboard/parameters/tentang.html')
+
+def bantuan(request):
+	return render(request, 'dashboard/parameters/bantuan.html')
+
 def choose_algo(request):
 	return render(request, 'dashboard/parameters/choose_algo.html')
 
