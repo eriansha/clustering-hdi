@@ -14,6 +14,7 @@ def st_dbscan(dataset, spatial_threshold, temporal_threshold, minPts, de):
     OUTPUT:
         C = {c1,c2,...,ck} Set of clusters
     """
+    cluster_list = []
     cluster_label = 0
     noise = -1
     unmarked = 7777
@@ -29,104 +30,74 @@ def st_dbscan(dataset, spatial_threshold, temporal_threshold, minPts, de):
     
     # for each point in dataset
     for index in range(dataset.shape[0]):
-        # <Debugging>
-        # print('--------------------------------indeksfloat {} --------------------------------'.format(index))
+        
+        # Jika objek belum bagian dari cluster
         if dataset[index][4] == unmarked:
+            # mencari tetangga yang directly density reachable dari objek
             neighborhood = retrieveNeighbors(index, dataset, spatial_threshold, temporal_threshold)
             
-            # <Debugging>
-            # print("jumlah tetangga di indeks ke-{} adalah: {}".format(index, len(neighborhood)))
-            # print("tetangganya yaitu, {}".format(neighborhood))
-            
             if len(neighborhood) < minPts:
-                # mark point[index] as noise
+                # tandai sebagai noise
                 dataset[index][4] = noise
-                # print("indeks ke-{} adalah noise".format(index))
                 
             else:
-                # find a core point (construct a new cluster)
-                # print('masuk pemberian cluster..........................')
-                
+                # menemukan core object (construct a new cluster)
                 cluster_label += 1
-                # print('>>>> cluster {} telah dibuat'.format(cluster_label))
                 
+                cluster_list.append(cluster_label)
+
+                # nyatakan objek sebagai bagian dari cluster
                 dataset[index][4] = cluster_label
-                # print("Indeks {} adalah core point".format(index))
                 
-                # centre_cluster.append(index)
-                
-                # assign core's label to its neighborhood
+                # nyatakan semua tetangga dari core objek sebagai bagian dari cluster
                 for neigh_index in neighborhood:
                     dataset[neigh_index][4] = cluster_label
-                    # print("tetangga indeks ke-{} adalah cluster ke-{} dan segera masuk ke stack".format(neigh_index ,cluster_label))
+                    
                 
-                    # append all neighborhood to stack
+                    # masukan seluruh tetangga ke dalam Stack
+                    # Stack digunakan untuk mencari tetangga yang density-reachable
                     stack.append(neigh_index)
                     
                 
-                # print('stack: {}'.format(stack))
-                
-                # find new neighbors from core point neighborhood
+                # Mencari tetangga baru (density-reachable) dari tetangga (directly density reachable) objek
                 while len(stack) > 0:
-                    # print("Mencari tetangga baru dari tetangga core point ke-{}".format(index))
                     
                     current_point_index = stack.pop() # popping the last order stack
                     
-                    # print("mengeluarkan indeks {} dari stack".format(current_point_index))
+                    # mencari tetangga yang density-reachable
                     new_neighborhood = retrieveNeighbors(current_point_index,
                                                          dataset,
                                                          spatial_threshold,
                                                          temporal_threshold)
                     
-                    # print('Jumlah tetangga baru ada {}, yaitu {}'.format(len(new_neighborhood), new_neighborhood))
-                    
-                    # current_point is a new core
+                    # jika jumlah tetangga baru tetangga (directly density reachable) objek lebih
+                    # lebih besar dari MinPts
                     if len(new_neighborhood) >= minPts:
-                        # print("mencari core point baru...............")
+
                         
                         for neigh_index in new_neighborhood:
-                            # print("-----Indeks {}-----".format(neigh_index))
                             
                             neigh_cluster = dataset[neigh_index][4]
-                            # print("nilai cluster: {}".format(neigh_cluster))
-                            
-                            neigh_ipm = dataset[neigh_index][3]
-                            # print('neigh_ipm : {}'.format(neigh_ipm))
-                            
-                            ipm_cluster = dataset[np.where(dataset[:,4] == cluster_label) ,3]
-                            # alternative >> np.sum(ipm_cluster)/ipm_cluster.shape[0]
-                            
-                            # print('ipm_cluster: {}'.format(len(ipm_cluster)))
-                            # print('actual neig_cluster: {}'.format(neig_cluster))
-                            
-                            #print('ipm_cluster mean: {}'.format(ipm_cluster.mean()))
-                            #print('ipm_cluster std: {}'.format(ipm_cluster.std()))
-                            #print('standardizing difference (absolute): {}'.format(abs(standardizing(neigh_ipm, ipm_cluster))))
-                            
-                            # if object not marked as noise or it's not in a cluster
-                            if all([neigh_cluster!= noise , neigh_cluster == unmarked]) and \
-                                abs(standardizing(neigh_ipm, ipm_cluster)) <= de:
-                                # abs((neigh_ipm - ipm_cluster.mean())) <= de:
+                            if neigh_cluster not in cluster_list:
+                                neigh_ipm = dataset[neigh_index][3]
                                 
-                                dataset[neigh_index][4] = cluster_label
-                                #print("Indeks {} adalah core point baru".format(neigh_index))
+                                ipm_cluster = dataset[np.where(dataset[:,4] == cluster_label) ,3]
                                 
-#                                 centre_cluster.pop()
-#                                 centre_cluster.append(neigh_index)
-                                
-                                #if new_neigh_index not in stack:
-                                stack.append(neigh_index)
-#                             else:
-#                                 #print("Indeks {} bukan core point baru".format(neigh_index))
-#                                 # print("")
-#                     else:
-#                         # <Debugging>
-#                         #print("Tidak menemukan jumlah tetangga yang melebihi minPts")
-                                
-#         else:
-#             #print("indeks {} berada di cluster {}".format(index, cluster_label))
-           
-    #print('centre cluster: {}'.format(centre_cluster))
+                                # Jika objek dari tetangga baru bukan noise atau
+                                # belum bagian dari cluster
+                                if (neigh_cluster != noise or \
+                                    neigh_cluster == unmarked) and \
+                                    abs(standardizing(neigh_ipm, ipm_cluster)) <= de:
+                                    
+                                    # menemukan density-reachable
+
+                                    # nyatakan sebagai bagian dari cluster_label
+                                    dataset[neigh_index][4] = cluster_label
+
+                                    # masukan objek ke dalam stack 
+                                    # untuk mencari density-reachbale lagi
+                                    stack.append(neigh_index)
+
     return dataset
 
 def retrieveNeighbors(index_center, dataset, spatial_threshold, temporal_threshold):
