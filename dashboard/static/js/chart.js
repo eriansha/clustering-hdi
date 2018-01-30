@@ -9,6 +9,10 @@ function plot3d(dict, color) {
 		x_value.push(d.coordinate[0]);
 		y_value.push(d.coordinate[1]);
 		z_value.push(d.ipm);
+		if (d.cluster == -1)
+		{
+			cluster.push('#000');
+		}
 		cluster.push(color(d.cluster));
 		kab_value.push(d.kabupaten);
 	});
@@ -43,7 +47,7 @@ function plot3d(dict, color) {
 	var data = [plot];
 	var layout = {
 			margin: {
-				l: 0,
+				l: 100,
 				r: 0,
 				b: 0,
 				t: 0
@@ -175,6 +179,7 @@ function draw_bar(selection, color, datum, dataset) {
 			.attr("class", "y axis")
 			.call(yAxis);
 
+
 	// draw bar chart
 	barChart.selectAll(".bar")
 			.data(bar)
@@ -202,6 +207,23 @@ function draw_bar(selection, color, datum, dataset) {
 				       .duration(500)
 				       .style('opacity', 0)
 			});	
+
+		// Add y label
+		barChart.append('text')
+			.attr('transform', 'rotate(-90)')
+			.attr('y', 0 - (margin.left + 10))
+			.attr('x', 0 - (barHeight/2))
+			.attr('dy', '2em')
+			.style('text-anchor', 'middle')
+			.text('Nilai IPM');
+
+		barChart.append('text')
+			.attr('transform', "translate(")
+			.attr('y', 0 - (margin.left + 10))
+			.attr('x', 0 - (barHeight/2))
+			.attr('dy', '2em')
+			.style('text-anchor', 'middle')
+			.text('Nilai IPM');
 }
 
 function create_legend(selection, color, dataset) {
@@ -227,12 +249,20 @@ function create_legend(selection, color, dataset) {
 		  .attr("r","0.4em")
 		  .attr('width', 10)
 		  .attr('height', 10)
-		  .style('fill', function(d) { return color(d); });
+		  .style('fill', function(d) { 
+		  	if (d == -1) return '#000'
+	    	else {
+	    			return color(d);
+	    		 }
+	    	});
 
 	legend.append('text')
 		  .attr('x', 40 - 8)
 		  .attr('y', function(d, i){ return (i *  20) + 9;})
-		  .text(function(d){ return "Cluster " + d; });
+		  .text(function(d){ 
+		  	if (d == -1) return "Noise"
+		  	return "Cluster " + d; 
+		  });
 
 	return legend
 }
