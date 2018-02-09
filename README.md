@@ -1,3 +1,3 @@
-# Clustering Dashboard
+# Overview
 
-This is my final college project to build clustering dashboard for implementing ST-DSBCAN and K-Means algorithms to Human Development Index (HDI) based on regional in Jawa Island.
+This is my final college project to build Human Development Index clustering in Jawa Island by using ST-DBSCAN and K-Means.
